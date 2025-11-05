@@ -9,6 +9,15 @@ spring:
   threads:
     virtual:
       enabled: true
+  jpa:
+    show-sql: "\${SHOW_SQL:false}"
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: "\${ANALYTICS_DB_URL:jdbc:postgresql://\${ANALYTICS_DB_HOST:localhost}:\${ANALYTICS_DB_PORT:5432}/\${ANALYTICS_DB_NAME:payhub}?currentSchema=raw}"
+    username: "\${ANALYTICS_DB_USER}"
+    password: "\${ANALYTICS_DB_PASSWORD}"
+    driverClassName: org.postgresql.Driver
   temporal:
     namespace: "\${TEMPORAL_SERVER_NAMESPACE:pu-analytics}"
     connection:

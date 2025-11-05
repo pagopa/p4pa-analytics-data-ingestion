@@ -48,12 +48,14 @@ val protobufJavaVersion = "4.32.1"
 val grpcBomVersion = "1.75.0"
 val guavaVersion = "33.5.0-jre"
 val mapStructVersion = "1.6.3"
+val postgresJdbcVersion = "42.7.7"
 val podamVersion = "8.0.2.RELEASE"
 
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
   implementation("org.springframework.boot:spring-boot-starter-aop")
@@ -69,6 +71,7 @@ dependencies {
   implementation ("org.mapstruct:mapstruct:${mapStructVersion}")
   implementation ("org.bouncycastle:bcprov-jdk18on:${bouncycastleVersion}")
   implementation("org.apache.httpcomponents.client5:httpclient5:$httpClientVersion")
+  implementation ("org.postgresql:postgresql:${postgresJdbcVersion}")
   // Temporal
   implementation("io.temporal:temporal-spring-boot-starter:$temporalVersion") {
     exclude(group = "com.google.protobuf", module = "protobuf-java")
