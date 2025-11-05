@@ -99,6 +99,20 @@ rest:
       connect-millis: "\${DEFAULT_REST_TIMEOUT_CONNECT_MILLIS:120000}"
       read-millis: "\${DEFAULT_REST_TIMEOUT_READ_MILLIS:120000}"
 
+  auth:
+    base-url: "\${AUTH_BASE_URL:http://localhost:8080/auth}"
+    max-attempts: "\${AUTH_MAX_ATTEMPTS:3}" # It's counting also the first attempt
+    wait-time-millis: "\${AUTH_WAIT_TIME_MILLIS:500}"
+    print-body-when-error: "\${AUTH_PRINT_BODY_WHEN_ERROR:true}"
+    post-token:
+      client_secret: "\${AUTH_CLIENT_SECRET:clientsecret}"
+
+  debt-positions:
+    base-url: "\${DEBT_POSITIONS_BASE_URL:http://localhost:8080/debtposition}"
+    max-attempts: "\${DEBT_POSITIONS_MAX_ATTEMPTS:3}" # It's counting also the first attempt
+    wait-time-millis: "\${DEBT_POSITIONS_WAIT_TIME_MILLIS:500}"
+    print-body-when-error: "\${DEBT_POSITIONS_PRINT_BODY_WHEN_ERROR:true}"
+
 schedule:
   debt-position-type-orgs-ingestion:
     cron-expression: "\${SCHEDULE_DP_TYPE_ORGS_INGESTION_CRON:0 3 * * *}" # each day, 01:00-07:00-13:00-19:00 (Europe/Rome)
