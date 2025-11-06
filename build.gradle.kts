@@ -1,3 +1,5 @@
+import java.util.Objects
+
 plugins {
   java
   id("org.springframework.boot") version "3.5.6"
@@ -6,12 +8,13 @@ plugins {
   id("org.sonarqube") version "6.3.1.5724"
   id("com.github.ben-manes.versions") version "0.52.0"
   id("org.openapi.generator") version "7.15.0"
+  id("org.ajoberstar.grgit") version "5.3.2"
   id("com.gorylenko.gradle-git-properties") version "2.5.3"
 }
 
 group = "it.gov.pagopa.payhub"
 version = "0.0.1"
-description = "template-payments-java-repository"
+description = "p4pa-analytics-data-ingestion"
 
 java {
   toolchain {
@@ -23,6 +26,9 @@ configurations {
   compileOnly {
     extendsFrom(configurations.annotationProcessor.get())
   }
+  compileClasspath {
+    resolutionStrategy.activateDependencyLocking()
+  }
 }
 
 repositories {
@@ -30,32 +36,79 @@ repositories {
 }
 
 val springDocOpenApiVersion = "2.8.13"
+val springWolfAsyncApiVersion = "1.16.0"
 val janinoVersion = "3.1.12"
 val openApiToolsVersion = "0.2.7"
 val micrometerVersion = "1.5.4"
+val otelVersion = "1.49.0"
+val bouncycastleVersion = "1.82"
 val httpClientVersion = "5.5"
+val commonsLang3Version = "3.19.0"
+val temporalVersion = "1.31.0"
+val protobufJavaVersion = "4.32.1"
+val grpcBomVersion = "1.75.0"
+val guavaVersion = "33.5.0-jre"
+val mapStructVersion = "1.6.3"
+val postgresJdbcVersion = "42.7.7"
+val podamVersion = "8.0.2.RELEASE"
+val springCloudDepsVersion = "2025.0.0"
+
+dependencyManagement {
+  imports {
+    mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudDepsVersion")
+  }
+}
 
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+  implementation("org.springframework.cloud:spring-cloud-starter-stream-kafka")
+  implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocOpenApiVersion")
+  implementation("org.springframework.boot:spring-boot-starter-aop")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocOpenApiVersion") {
+    exclude(group = "org.apache.commons", module = "commons-lang3")
+  }
+  implementation ("org.apache.commons:commons-lang3:${commonsLang3Version}")
+  implementation ("io.github.springwolf:springwolf-kafka:${springWolfAsyncApiVersion}")
+  implementation("io.github.springwolf:springwolf-ui:${springWolfAsyncApiVersion}")
+  implementation("io.github.springwolf:springwolf-cloud-stream:${springWolfAsyncApiVersion}")
   implementation("org.codehaus.janino:janino:$janinoVersion")
   implementation("io.micrometer:micrometer-tracing-bridge-otel:$micrometerVersion")
   implementation("io.micrometer:micrometer-registry-prometheus")
   implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
   implementation("org.openapitools:jackson-databind-nullable:$openApiToolsVersion")
+  implementation ("org.mapstruct:mapstruct:${mapStructVersion}")
+  implementation ("org.bouncycastle:bcprov-jdk18on:${bouncycastleVersion}")
   implementation("org.apache.httpcomponents.client5:httpclient5:$httpClientVersion")
+  implementation ("org.postgresql:postgresql:${postgresJdbcVersion}")
+  // Temporal
+  implementation("io.temporal:temporal-spring-boot-starter:$temporalVersion") {
+    exclude(group = "com.google.protobuf", module = "protobuf-java")
+    exclude(group = "com.google.protobuf", module = "protobuf-java-util")
+    exclude(group = "io.grpc", module = "grpc-bom")
+    exclude(group = "com.google.guava", module = "guava")
+  }
+  implementation("com.google.protobuf:protobuf-java:$protobufJavaVersion")
+  implementation("com.google.protobuf:protobuf-java-util:${protobufJavaVersion}")
+  implementation(platform("io.grpc:grpc-bom:${grpcBomVersion}"))
+  implementation("com.google.guava:guava:$guavaVersion")
+  implementation("io.opentelemetry:opentelemetry-opentracing-shim:${otelVersion}")
 
   compileOnly("org.projectlombok:lombok")
   annotationProcessor("org.projectlombok:lombok")
+  annotationProcessor("org.mapstruct:mapstruct-processor:$mapStructVersion")
   testAnnotationProcessor("org.projectlombok:lombok")
+  testAnnotationProcessor("org.mapstruct:mapstruct-processor:$mapStructVersion")
 
   //	Testing
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.mockito:mockito-core")
   testImplementation("org.projectlombok:lombok")
+  testImplementation("com.h2database:h2")
+  testImplementation ("uk.co.jemos.podam:podam:${podamVersion}")
 }
 
 tasks.withType<Test> {
@@ -93,12 +146,6 @@ tasks {
   }
 }
 
-configurations {
-  compileClasspath {
-    resolutionStrategy.activateDependencyLocking()
-  }
-}
-
 tasks.compileJava {
   dependsOn("dependenciesBuild")
 }
@@ -108,7 +155,10 @@ tasks.register("dependenciesBuild") {
   description = "grouping all together automatically generate code tasks"
 
   dependsOn(
-    "openApiGenerate"
+    "openApiGenerate",
+    "openApiGenerateP4PAAUTH",
+    "openApiGenerateDEBTPOSITIONS",
+    "openApiGeneratePROCESSEXECUTIONS"
   )
 }
 
@@ -120,15 +170,19 @@ configure<SourceSetContainer> {
 
 springBoot {
   buildInfo()
-  mainClass.value("it.gov.pagopa.template.TemplateApplication")
+  mainClass.value("it.gov.pagopa.analytics.ingestion.AnalyticsDataIngestionApplication")
 }
 
 openApiGenerate {
   generatorName.set("spring")
-  inputSpec.set("$rootDir/openapi/template-payments-java-repository.openapi.yaml")
+  inputSpec.set("$rootDir/openapi/p4pa-analytics-data-ingestion.openapi.yaml")
   outputDir.set("$projectDir/build/generated")
-  apiPackage.set("it.gov.pagopa.template.controller.generated")
-  modelPackage.set("it.gov.pagopa.template.dto.generated")
+  apiPackage.set("it.gov.pagopa.analytics.ingestion.controller.generated")
+  modelPackage.set("it.gov.pagopa.analytics.ingestion.dto.generated")
+  typeMappings.set(mapOf(
+    "ScheduleEnum" to "it.gov.pagopa.analytics.ingestion.enums.ScheduleEnum",
+    "WorkflowExecutionStatus" to "io.temporal.api.enums.v1.WorkflowExecutionStatus"
+  ))
   configOptions.set(mapOf(
     "dateLibrary" to "java8",
     "requestMappingMode" to "api_interface",
@@ -141,4 +195,114 @@ openApiGenerate {
     "enumPropertyNaming" to "original",
     "additionalModelTypeAnnotations" to "@lombok.experimental.SuperBuilder(toBuilder = true)"
   ))
+}
+
+var targetEnv = when (Objects.requireNonNullElse(System.getProperty("targetBranch"), grgit.branch.current().name)) {
+  "uat" -> "uat"
+  "main" -> "main"
+  else -> "develop"
+}
+
+tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("openApiGenerateP4PAAUTH") {
+  group = "openapi"
+  description = "description"
+
+  generatorName.set("java")
+  remoteInputSpec.set("https://raw.githubusercontent.com/pagopa/p4pa-auth/refs/heads/$targetEnv/openapi/p4pa-auth.openapi.yaml")
+  outputDir.set("$projectDir/build/generated")
+  invokerPackage.set("it.gov.pagopa.pu.auth.generated")
+  apiPackage.set("it.gov.pagopa.pu.auth.controller.generated")
+  modelPackage.set("it.gov.pagopa.pu.auth.dto.generated")
+  configOptions.set(mapOf(
+    "swaggerAnnotations" to "false",
+    "openApiNullable" to "false",
+    "dateLibrary" to "java8",
+    "serializableModel" to "true",
+    "useSpringBoot3" to "true",
+    "useJakartaEe" to "true",
+    "useOneOfInterfaces" to "true",
+    "useBeanValidation" to "true",
+    "serializationLibrary" to "jackson",
+    "generateSupportingFiles" to "true",
+    "generateConstructorWithAllArgs" to "true",
+    "generatedConstructorWithRequiredArgs" to "true",
+    "enumPropertyNaming" to "original",
+    "additionalModelTypeAnnotations" to "@lombok.experimental.SuperBuilder(toBuilder = true)"
+  ))
+  library.set("resttemplate")
+}
+
+tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("openApiGenerateDEBTPOSITIONS") {
+  group = "openapi"
+  description = "description"
+
+  generatorName.set("java")
+  remoteInputSpec.set("https://raw.githubusercontent.com/pagopa/p4pa-debt-positions/refs/heads/$targetEnv/openapi/generated.openapi.json")
+  outputDir.set("$projectDir/build/generated")
+  invokerPackage.set("it.gov.pagopa.pu.debtpositions.generated")
+  apiPackage.set("it.gov.pagopa.pu.debtpositions.controller.generated")
+  modelPackage.set("it.gov.pagopa.pu.debtpositions.dto.generated")
+  typeMappings.set(mapOf(
+    "LocalDateTime" to "java.time.LocalDateTime",
+    "string+binary" to "Resource"
+  ))
+  importMappings.set(mapOf(
+    "Resource" to "org.springframework.core.io.Resource"
+  ))
+  configOptions.set(mapOf(
+    "swaggerAnnotations" to "false",
+    "openApiNullable" to "false",
+    "dateLibrary" to "java8",
+    "serializableModel" to "true",
+    "useSpringBoot3" to "true",
+    "useJakartaEe" to "true",
+    "useOneOfInterfaces" to "true",
+    "useBeanValidation" to "true",
+    "serializationLibrary" to "jackson",
+    "generateSupportingFiles" to "true",
+    "generateConstructorWithAllArgs" to "true",
+    "generatedConstructorWithRequiredArgs" to "true",
+    "enumPropertyNaming" to "original",
+    "additionalModelTypeAnnotations" to "@lombok.experimental.SuperBuilder(toBuilder = true)"
+  ))
+  additionalProperties.set(mapOf(
+    "removeEnumValuePrefix" to "false"
+  ))
+  library.set("resttemplate")
+}
+
+tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("openApiGeneratePROCESSEXECUTIONS") {
+  group = "openapi"
+  description = "description"
+
+  generatorName.set("java")
+  remoteInputSpec.set("https://raw.githubusercontent.com/pagopa/p4pa-process-executions/refs/heads/$targetEnv/openapi/generated.openapi.json")
+  outputDir.set("$projectDir/build/generated")
+  invokerPackage.set("it.gov.pagopa.pu.processexecutions.generated")
+  apiPackage.set("it.gov.pagopa.pu.processexecutions.controller.generated")
+  modelPackage.set("it.gov.pagopa.pu.processexecutions.dto.generated")
+  typeMappings.set(mapOf(
+    "LocalDateTime" to "java.time.LocalDateTime",
+    "string+binary" to "Resource"
+  ))
+  configOptions.set(mapOf(
+    "swaggerAnnotations" to "false",
+    "openApiNullable" to "false",
+    "dateLibrary" to "java8",
+    "serializableModel" to "true",
+    "useSpringBoot3" to "true",
+    "useJakartaEe" to "true",
+    "useOneOfInterfaces" to "true",
+    "useBeanValidation" to "true",
+    "serializationLibrary" to "jackson",
+    "generateSupportingFiles" to "true",
+    "generateConstructorWithAllArgs" to "true",
+    "generatedConstructorWithRequiredArgs" to "true",
+    "enumPropertyNaming" to "original",
+    "additionalModelTypeAnnotations" to "@lombok.experimental.SuperBuilder(toBuilder = true)"
+  ))
+  additionalProperties.set(mapOf(
+    "removeEnumValuePrefix" to "false"
+  ))
+  library.set("resttemplate")
 }

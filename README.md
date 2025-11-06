@@ -1,83 +1,246 @@
-# Example Repository Template
+# p4pa-analytics-data-ingestion
 
-This repository serves as an **example template** to kick-start your projects with pre-configured files and folders for **OpenAPI**, **Helm**, **Gradle**, **Java**, and **JUnit testing**. It is designed to streamline the initial setup of new projects and ensure consistency in project structure.
+This application represent the data ingestion layer of the analytics tool related to **Piattaforma Unitaria** product (PU).
 
----
+See [PU Microservice Architecture](https://pagopa.atlassian.net/wiki/spaces/SPAC/pages/1405845916/Architettura+microservizi) for more details.
 
-## 📂 Repository Structure
+## 🧱 Role
 
-Here is a quick overview of the files and directories included in this repository:
+* To ingest the data filling `raw` layer.
 
-```plaintext
-.
-├── .devops/            # DevOps pipelines
-├── .github/            # GitHub configuration files
-├── gradle/             # Gradle wrapper files
-├── helm/               # Helm charts for Kubernetes deployments
-├── openapi/            # OpenAPI specification files
-├── src/                # Source code for the Java application
-│   ├── main/
-│   └── test/
-├── build.gradle.kts    # Gradle build file
-├── Dockerfile          # Docker build file
-├── README.md           # Project documentation
-├── settings.gradle.kts # Gradle settings file
-└── .gitignore          # Git ignore rules
-```
+## 🌐 APIs
+See [OpenAPI](openapi/generated.openapi.json), exposed through the following path:
+* `/swagger-ui/index.html`
 
-## 🚀 Features
+### 📌 Relevant APIs
+* `GET /workflows/{workflowId}/status`: To get workflow status;
+* `GET /schedules/{scheduleId}/info`: To get schedule info;
+* `POST /workflow/debt-position-type-orgs-ingestion`: To start DebtPositionTypeOrgsIngestion WF.
 
-### 📜 OpenAPI
+### 📌 Common HTTP status returned:
+* `401`: Invalid access token provided, thus a new login is required;
+* `403`: Trying to access a not authorized resource.
 
-- Example OpenAPI specification file (`template-payments-java-repository.openapi.yaml`) to document your RESTful APIs.
-- Compatible with tools like Swagger and Postman.
+## 🌐 AsyncAPIs
+See [AsyncAPI](asyncapi/generated.asyncapi.json), exposed through the following path:
+* `/springwolf/asyncapi-ui.html`
 
-### ⚙️ Helm
+## 🔎 Monitoring
+See available actuator endpoints through the following path:
+* `/actuator`
 
-- Template Helm charts for deploying your Java application on Kubernetes.
-- Includes `values.yaml` for parameter configuration and pre-defined deployment manifests.
+### 📌 Relevant endpoints
+* Health (provide an accessToken to see details): `/actuator/health`
+  * Liveness: `/actuator/health/liveness`
+  * Readiness: `/actuator/health/readiness`
+* Metrics: `/actuator/metrics`
+  * Prometheus: `/actuator/prometheus`
 
-### 🔧 Gradle
+Further endpoints are exposed through the JMX console.
 
-- `build.gradle` file with dependencies and plugins for building, testing, and running your Java application.
-- Compatible with Java 21+.
+## ✏️ Logging
+See [log configured pattern](/src/main/resources/logback-spring.xml).
 
-### ☕ Java
+## 🔗 Dependencies
 
-- Example Java application structure with a simple `HelloWorld` class.
+### 🗄️ Resources
+* Postgresql
+* Temporal.io
+* Kafka
 
-### ✅ JUnit
+### 🧩 Microservices
+* [p4pa-auth](https://github.com/pagopa/p4pa-auth):
+  * To obtain a technical access token (used on WF to call inner microservices);
+* [p4pa-debt-positions](https://github.com/pagopa/p4pa-debt-positions):
+  * To obtain a DebtPositionTypeOrg data.
 
-- Example JUnit test cases under the `test/` directory to help you get started with unit testing.
+## 🔧 Configuration
 
----
+See [application.yml](src/main/resources/application.yml) for each configurable property.
+
+### 📌 Relevant configurations
+
+#### 🌐 Application Server
+| ENV         | DESCRIPTION                       | DEFAULT |
+|-------------|-----------------------------------|---------|
+| SERVER_PORT | Application server listening port | 8080    |
+
+#### ✏️ Logging
+| ENV                                   | DESCRIPTION                                                                                                                                                                     | DEFAULT |
+|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| LOG_LEVEL_ROOT                        | Base level                                                                                                                                                                      | INFO    |
+| LOG_LEVEL_PAGOPA                      | Base level of custom classes                                                                                                                                                    | INFO    |
+| LOG_LEVEL_SPRING                      | Level applied to Spring framework                                                                                                                                               | INFO    |
+| LOG_LEVEL_SPRING_BOOT_AVAILABILITY    | To print availability events                                                                                                                                                    | DEBUG   |
+| LOGGING_LEVEL_API_REQUEST_EXCEPTION   | Level applied to APIs exception                                                                                                                                                 | INFO    |
+| LOG_LEVEL_PERFORMANCE_LOG             | Level applied to [PerformanceLog](https://pagopa.atlassian.net/wiki/spaces/SPAC/pages/1540096383/Logging#2.2.-Log-di-performance)                                               | INFO    |
+| LOG_LEVEL_PERFORMANCE_LOG_API_REQUEST | Level applied to [API Performance Log](https://pagopa.atlassian.net/wiki/spaces/SPAC/pages/1540096383/Logging#2.2.2.1.-Log-di-perfomance-per-le-API)                            | INFO    |
+| LOG_LEVEL_PERFORMANCE_LOG_REST_INVOKE | Level applied to [REST invoke Performance Log](https://pagopa.atlassian.net/wiki/spaces/SPAC/pages/1540096383/Logging#2.2.2.2.-Log-di-performance-per-i-servizi-REST-integrati) | INFO    |
+
+#### 🔁 Integrations
+
+##### 🗄️ Resources
+| ENV                   | DESCRIPTION                                                                   | DEFAULT                                                                                                                      |
+|-----------------------|-------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| SHOW_SQL              | To print SQL statements                                                       | false                                                                                                                        |
+| ANALYTICS_DB_URL      | PostgreSQL connection string (to use in order to customize the entire string) | jdbc:postgresql://${CLASSIFICATION_DB_HOST}:${CLASSIFICATION_DB_PORT}/${CLASSIFICATION_DB_NAME}?currentSchema=debt_positions |
+| ANALYTICS_DB_HOST     | PostgreSQL Host                                                               | localhost                                                                                                                    |
+| ANALYTICS_DB_PORT     | PostgreSQL port                                                               | 5432                                                                                                                         |
+| ANALYTICS_DB_NAME     | PostgreSQL Database name                                                      | payhub                                                                                                                       |
+| ANALYTICS_DB_USER     | PostgreSQL username                                                           |                                                                                                                              |
+| ANALYTICS_DB_PASSWORD | PostgreSQL password                                                           |                                                                                                                              |
+
+##### 🔗 REST
+| ENV                                               | DESCRIPTION                               | DEFAULT |
+|---------------------------------------------------|-------------------------------------------|---------|
+| DEFAULT_REST_CONNECTION_POOL_SIZE                 | Default connection pool size              | 10      |
+| DEFAULT_REST_CONNECTION_POOL_SIZE_PER_ROUTE       | Default connection pool size per route    | 5       |
+| DEFAULT_REST_CONNECTION_POOL_TIME_TO_LIVE_MINUTES | Default connection pool TTL (minutes)     | 10      |
+| DEFAULT_REST_TIMEOUT_CONNECT_MILLIS               | Default connection timeout (milliseconds) | 120000  |
+| DEFAULT_REST_TIMEOUT_READ_MILLIS                  | Default read timeout (milliseconds)       | 120000  |
+
+##### 🧩 Microservices
+| ENV                                  | DESCRIPTION                                     | DEFAULT |
+|--------------------------------------|-------------------------------------------------|---------|
+| AUTH_BASE_URL                        | Auth microservice URL                           |         |
+| AUTH_MAX_ATTEMPTS                    | Auth API max attempts                           | 3       |
+| AUTH_WAIT_TIME_MILLIS                | Auth retry waiting time (milliseconds)          | 500     |
+| AUTH_PRINT_BODY_WHEN_ERROR           | To print body when an error occurs              | true    |
+| DEBT_POSITIONS_BASE_URL              | DebtPositions microservice URL                  |         |
+| DEBT_POSITIONS_MAX_ATTEMPTS          | DebtPositions API max attempts                  | 3       |
+| DEBT_POSITIONS_WAIT_TIME_MILLIS      | DebtPositions retry waiting time (milliseconds) | 500     |
+| DEBT_POSITIONS_PRINT_BODY_WHEN_ERROR | To print body when an error occurs              | true    |
+
+##### 🌀 KAFKA
+| ENV                                | DESCRIPTION                                                        | DEFAULT                |
+|------------------------------------|--------------------------------------------------------------------|------------------------|
+| KAFKA_BINDER_BROKER                | Comma separated list of brokers to which the Kafka binder connects |                        |
+| KAFKA_PAYMENTS_BINDER_BROKER       | Comma separated list of brokers to which the Kafka binder connects | ${KAFKA_BINDER_BROKER} |
+| KAFKA_DATA_EVENTS_BINDER_BROKER    | Comma separated list of brokers to which the Kafka binder connects | ${KAFKA_BINDER_BROKER} |
+| KAFKA_AUDIT_BINDER_BROKER          | Comma separated list of brokers to which the Kafka binder connects | ${KAFKA_BINDER_BROKER} |
+| KAFKA_CONFIG_HEARTBEAT_INTERVAL_MS | Hearth beat interval (milliseconds)                                | 3000                   |
+| KAFKA_CONFIG_SESSION_TIMEOUT_MS    | Session timeout (milliseconds)                                     | 30000                  |
+| KAFKA_CONFIG_REQUEST_TIMEOUT_MS    | Request timeout (milliseconds)                                     | 60000                  |
+| KAFKA_CONFIG_METADATA_MAX_AGE      | Metadata max age (milliseconds)                                    | 180000                 |
+| KAFKA_CONFIG_SASL_MECHANISM        | SASL mechanism                                                     | PLAIN                  |
+| KAFKA_CONFIG_SECURITY_PROTOCOL     | Security protocol                                                  | SASL_SSL               |
+| KAFKA_CONFIG_MAX_REQUEST_SIZE      | Max request size                                                   | 1000000                |
+
+###### 📥 KAFKA CONSUMERS
+| ENV                                                 | DESCRIPTION                                                                                    | DEFAULT                                            |
+|-----------------------------------------------------|------------------------------------------------------------------------------------------------|----------------------------------------------------|
+| KAFKA_CONSUMER_CONFIG_AUTO_COMMIT                   | True if the acknowledgement of the message is implicit if there are not errors                 | true                                               |
+| KAFKA_CONSUMER_CONFIG_CONNECTIONS_MAX_IDLE_MS       | Maximum lifetime for idle connections (milliseconds)                                           | 180000                                             |
+| KAFKA_CONFIG_MAX_POLL_INTERVAL_TIMEOUT_MS           | Maximum interval between polls declared toward the broker (milliseconds)                       | 300000                                             |
+| KAFKA_CONSUMER_CONFIG_MAX_POLL_SIZE                 | Maximum number of messages fetch for each poll                                                 | 500                                                |
+| KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MS         | Initial timeout configured for the connection process (milliseconds)                           | 100000                                             |
+| KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MAX_MS     | Maximum timeout configured when connection attempts repeatedly fail (milliseconds)             | 200000                                             |
+| KAFKA_CONSUMER_CONFIG_STANDARD_HEADERS              | If ask for contextual metadata headers when reading messages                                   | both                                               |
+| KAFKA_CONSUMER_CONFIG_START_OFFSET                  | Where the consumer should begins consuming messages from a topic's partition (earliest/latest) | earliest                                           |
+| KAFKA_TOPIC_PAYMENTS                                | Topic where to read payment event                                                              | p4pa-payhub-payments-evh                           |
+| KAFKA_PAYMENTS_CONSUMER_SASL_JAAS_CONFIG            | JAAS Config string used to perform authentication                                              |                                                    |
+| KAFKA_PAYMENTS_GROUP_ID                             | Consumer group id                                                                              | p4pa-workflow-hub-consumer-group                   |
+| KAFKA_PAYMENTS_CONSUMER_ENABLED                     | If the consumer should read messages                                                           | true                                               |
+| KAFKA_PAYMENTS_AUTO_COMMIT                          | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_AUTO_COMMIT}               |
+| KAFKA_PAYMENTS_REQUEST_CONNECTIONS_MAX_IDLE_MS      | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_CONNECTIONS_MAX_IDLE_MS}   |
+| KAFKA_PAYMENTS_INTERVAL_TIMEOUT_MS                  | See default config description                                                                 | ${KAFKA_CONFIG_MAX_POLL_INTERVAL_TIMEOUT_MS}       |
+| KAFKA_PAYMENTS_MAX_POLL_SIZE                        | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_MAX_POLL_SIZE}             |
+| KAFKA_PAYMENTS_REQUEST_CONNECTION_TIMEOUT_MAX_MS    | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MAX_MS} |
+| KAFKA_PAYMENTS_REQUEST_CONNECTION_TIMEOUT_MS        | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MS}     |
+| KAFKA_PAYMENTS_STANDARD_HEADERS                     | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_STANDARD_HEADERS}          |
+| KAFKA_PAYMENTS_REQUEST_START_OFFSET                 | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_START_OFFSET}              |
+| KAFKA_TOPIC_DATA_EVENTS                             | Topic where to read payment event                                                              | p4pa-payhub-payments-evh                           |
+| KAFKA_DATA_EVENTS_CONSUMER_SASL_JAAS_CONFIG         | JAAS Config string used to perform authentication                                              |                                                    |
+| KAFKA_DATA_EVENTS_GROUP_ID                          | Consumer group id                                                                              | p4pa-workflow-hub-consumer-group                   |
+| KAFKA_DATA_EVENTS_CONSUMER_ENABLED                  | If the consumer should read messages                                                           | true                                               |
+| KAFKA_DATA_EVENTS_AUTO_COMMIT                       | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_AUTO_COMMIT}               |
+| KAFKA_DATA_EVENTS_REQUEST_CONNECTIONS_MAX_IDLE_MS   | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_CONNECTIONS_MAX_IDLE_MS}   |
+| KAFKA_DATA_EVENTS_INTERVAL_TIMEOUT_MS               | See default config description                                                                 | ${KAFKA_CONFIG_MAX_POLL_INTERVAL_TIMEOUT_MS}       |
+| KAFKA_DATA_EVENTS_MAX_POLL_SIZE                     | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_MAX_POLL_SIZE}             |
+| KAFKA_DATA_EVENTS_REQUEST_CONNECTION_TIMEOUT_MAX_MS | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MAX_MS} |
+| KAFKA_DATA_EVENTS_REQUEST_CONNECTION_TIMEOUT_MS     | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MS}     |
+| KAFKA_DATA_EVENTS_STANDARD_HEADERS                  | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_STANDARD_HEADERS}          |
+| KAFKA_DATA_EVENTS_REQUEST_START_OFFSET              | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_START_OFFSET}              |
+| KAFKA_TOPIC_AUDIT                                   | Topic where to read payment event                                                              | p4pa-payhub-payments-evh                           |
+| KAFKA_AUDIT_CONSUMER_SASL_JAAS_CONFIG               | JAAS Config string used to perform authentication                                              |                                                    |
+| KAFKA_AUDIT_GROUP_ID                                | Consumer group id                                                                              | p4pa-workflow-hub-consumer-group                   |
+| KAFKA_AUDIT_CONSUMER_ENABLED                        | If the consumer should read messages                                                           | true                                               |
+| KAFKA_AUDIT_AUTO_COMMIT                             | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_AUTO_COMMIT}               |
+| KAFKA_AUDIT_REQUEST_CONNECTIONS_MAX_IDLE_MS         | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_CONNECTIONS_MAX_IDLE_MS}   |
+| KAFKA_AUDIT_INTERVAL_TIMEOUT_MS                     | See default config description                                                                 | ${KAFKA_CONFIG_MAX_POLL_INTERVAL_TIMEOUT_MS}       |
+| KAFKA_AUDIT_MAX_POLL_SIZE                           | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_MAX_POLL_SIZE}             |
+| KAFKA_AUDIT_REQUEST_CONNECTION_TIMEOUT_MAX_MS       | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MAX_MS} |
+| KAFKA_AUDIT_REQUEST_CONNECTION_TIMEOUT_MS           | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MS}     |
+| KAFKA_AUDIT_STANDARD_HEADERS                        | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_STANDARD_HEADERS}          |
+| KAFKA_AUDIT_REQUEST_START_OFFSET                    | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_START_OFFSET}              |
+
+##### 🕒 Temporal.io
+| ENV                                                       | DESCRIPTION                                                            | DEFAULT   |
+|-----------------------------------------------------------|------------------------------------------------------------------------|-----------|
+| TEMPORAL_SERVER_HOST                                      | Temporal hostname                                                      | localhost |
+| TEMPORAL_SERVER_PORT                                      | Temporal port                                                          | 7233      |
+| TEMPORAL_SERVER_ENABLE_HTTPS                              | To use HTTPS when invoking Temporal                                    | false     |
+| TEMPORAL_SERVER_NAMESPACE                                 | Temporal namespace                                                     | pu        |
+| DEFAULT_ACTIVITY_CONFIG_START_TO_CLOSE_TIMEOUT_IN_SECONDS | Default startToClose activity timeout (seconds)                        | 300       |
+| DEFAULT_ACTIVITY_CONFIG_RETRY_INITIAL_INTERVAL_IN_MILLIS  | Default initial interval to wait during retries (milliseconds)         | 1000      |
+| DEFAULT_ACTIVITY_CONFIG_RETRY_BACKOFF_COEFFICIENT         | Default backoff coefficient used to increase the delay between retries | 1.5       |
+| DEFAULT_ACTIVITY_CONFIG_RETRY_MAXIMUM_ATTEMPTS            | Default maximum number of retries                                      | 30        |
+
+See `workflow.*` properties on [application.yml](src/main/resources/application.yml) to check configuration for each workflow.
+
+###### 📥 TaskQueue poller sizes
+| ENV                           | DESCRIPTION                                                      | DEFAULT |
+|-------------------------------|------------------------------------------------------------------|---------|
+| WF_DATA_INGESTION_POLLER_SIZE | Poller size configured for Temporal task queue `DataIngestionWF` | 5       |
+
+#### 💼 Business logic
+| ENV                                  | DESCRIPTION                                                 | DEFAULT    |
+|--------------------------------------|-------------------------------------------------------------|------------|
+| SCHEDULE_DP_TYPE_ORGS_INGESTION_CRON | Frequency of DPTypeOrgs data ingestion WF (cron expression) | 0 1 * * *  |
+
+#### 🔑 keys
+| ENV                  | DESCRIPTION                                                                              | DEFAULT |
+|----------------------|------------------------------------------------------------------------------------------|---------|
+| JWT_TOKEN_PUBLIC_KEY | p4pa-auth JWT public key                                                                 |         |
+| AUTH_CLIENT_SECRET   | client_secret used on M2M authentication to get a technical access token                 |         |
 
 ## 🛠️ Getting Started
 
-### Prerequisites
+### 📝 Prerequisites
 
 Ensure the following tools are installed on your machine:
 
 1. **Java 21+**
 2. **Gradle** (or use the Gradle wrapper included in the repository)
-3. **Docker** (for Helm-related tasks, optional)
+3. **Docker** (to build and run on an isolated environment, optional)
 
-### Building & Run
+### 🔐 Write Locks
 
-#### Build
+```sh
+./gradlew dependencies --write-locks
+```
+
+### ⚙️ Build
 
 ```sh
 ./gradlew clean build
 ```
 
-#### Run local
+### 🧪 Test
+
+#### 📌 JUnit
+```sh
+./gradlew test
+```
+
+### 🚀 Run local
 
 ```sh
 ./gradlew bootRun
 ```
 
-#### Write Locks
-
+### 🐳 Build & run through Docker
 ```sh
-./gradlew dependencies --write-locks
+docker build -t <APP_NAME> .
+docker run --env-file <ENV_FILE> <APP_NAME>
 ```
