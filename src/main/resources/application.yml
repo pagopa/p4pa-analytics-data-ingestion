@@ -14,7 +14,7 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: "\${ANALYTICS_DB_URL:jdbc:postgresql://\${ANALYTICS_DB_HOST:localhost}:\${ANALYTICS_DB_PORT:5432}/\${ANALYTICS_DB_NAME:payhub}?currentSchema=raw}"
+    url: "\${ANALYTICS_DB_URL:jdbc:postgresql://\${ANALYTICS_DB_HOST:localhost}:\${ANALYTICS_DB_PORT:5432}/\${ANALYTICS_DB_NAME:analytics}?currentSchema=raw}"
     username: "\${ANALYTICS_DB_USER}"
     password: "\${ANALYTICS_DB_PASSWORD}"
     driverClassName: org.postgresql.Driver
