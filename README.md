@@ -138,7 +138,7 @@ See [application.yml](src/main/resources/application.yml) for each configurable 
 | KAFKA_CONSUMER_CONFIG_STANDARD_HEADERS              | If ask for contextual metadata headers when reading messages                                   | both                                               |
 | KAFKA_CONSUMER_CONFIG_START_OFFSET                  | Where the consumer should begins consuming messages from a topic's partition (earliest/latest) | earliest                                           |
 | KAFKA_TOPIC_PAYMENTS                                | Topic where to read payment event                                                              | p4pa-payhub-payments-evh                           |
-| KAFKA_PAYMENTS_SASL_JAAS_CONFIG                     | JAAS Config string used to perform authentication                                              |                                                    |
+| KAFKA_PAYMENTS_CONSUMER_SASL_JAAS_CONFIG            | JAAS Config string used to perform authentication                                              |                                                    |
 | KAFKA_PAYMENTS_GROUP_ID                             | Consumer group id                                                                              | p4pa-workflow-hub-consumer-group                   |
 | KAFKA_PAYMENTS_CONSUMER_ENABLED                     | If the consumer should read messages                                                           | true                                               |
 | KAFKA_PAYMENTS_AUTO_COMMIT                          | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_AUTO_COMMIT}               |
@@ -150,7 +150,7 @@ See [application.yml](src/main/resources/application.yml) for each configurable 
 | KAFKA_PAYMENTS_STANDARD_HEADERS                     | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_STANDARD_HEADERS}          |
 | KAFKA_PAYMENTS_REQUEST_START_OFFSET                 | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_START_OFFSET}              |
 | KAFKA_TOPIC_DATA_EVENTS                             | Topic where to read payment event                                                              | p4pa-payhub-payments-evh                           |
-| KAFKA_DATA_EVENTS_SASL_JAAS_CONFIG                  | JAAS Config string used to perform authentication                                              |                                                    |
+| KAFKA_DATA_EVENTS_CONSUMER_SASL_JAAS_CONFIG         | JAAS Config string used to perform authentication                                              |                                                    |
 | KAFKA_DATA_EVENTS_GROUP_ID                          | Consumer group id                                                                              | p4pa-workflow-hub-consumer-group                   |
 | KAFKA_DATA_EVENTS_CONSUMER_ENABLED                  | If the consumer should read messages                                                           | true                                               |
 | KAFKA_DATA_EVENTS_AUTO_COMMIT                       | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_AUTO_COMMIT}               |
@@ -162,7 +162,7 @@ See [application.yml](src/main/resources/application.yml) for each configurable 
 | KAFKA_DATA_EVENTS_STANDARD_HEADERS                  | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_STANDARD_HEADERS}          |
 | KAFKA_DATA_EVENTS_REQUEST_START_OFFSET              | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_START_OFFSET}              |
 | KAFKA_TOPIC_AUDIT                                   | Topic where to read payment event                                                              | p4pa-payhub-payments-evh                           |
-| KAFKA_AUDIT_SASL_JAAS_CONFIG                        | JAAS Config string used to perform authentication                                              |                                                    |
+| KAFKA_AUDIT_CONSUMER_SASL_JAAS_CONFIG               | JAAS Config string used to perform authentication                                              |                                                    |
 | KAFKA_AUDIT_GROUP_ID                                | Consumer group id                                                                              | p4pa-workflow-hub-consumer-group                   |
 | KAFKA_AUDIT_CONSUMER_ENABLED                        | If the consumer should read messages                                                           | true                                               |
 | KAFKA_AUDIT_AUTO_COMMIT                             | See default config description                                                                 | ${KAFKA_CONSUMER_CONFIG_AUTO_COMMIT}               |
