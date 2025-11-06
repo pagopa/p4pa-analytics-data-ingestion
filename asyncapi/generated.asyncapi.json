@@ -14,6 +14,17 @@
     }
   },
   "channels": {
+    "p4pa-payhub-audit-evh": {
+      "address": "p4pa-payhub-audit-evh",
+      "messages": {
+        "string": {
+          "$ref": "#/components/messages/string"
+        }
+      },
+      "bindings": {
+        "kafka": { }
+      }
+    },
     "p4pa-payhub-data-events-evh": {
       "address": "p4pa-payhub-data-events-evh",
       "messages": {
@@ -1238,6 +1249,12 @@
           "remittanceInformation",
           "transferIndex"
         ]
+      },
+      "string": {
+        "type": "string",
+        "examples": [
+          "\"string\""
+        ]
       }
     },
     "messages": {
@@ -1289,10 +1306,44 @@
         "bindings": {
           "kafka": { }
         }
+      },
+      "string": {
+        "headers": {
+          "$ref": "#/components/schemas/HeadersNotDocumented"
+        },
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "type": "string",
+            "examples": [
+              "\"string\""
+            ]
+          }
+        },
+        "name": "string",
+        "title": "string",
+        "bindings": {
+          "kafka": { }
+        }
       }
     }
   },
   "operations": {
+    "p4pa-payhub-audit-evh_receive_AuditConsumer": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/p4pa-payhub-audit-evh"
+      },
+      "description": "Auto-generated description",
+      "bindings": {
+        "kafka": { }
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/p4pa-payhub-audit-evh/messages/string"
+        }
+      ]
+    },
     "p4pa-payhub-data-events-evh_receive_DataEventsConsumer": {
       "action": "receive",
       "channel": {
