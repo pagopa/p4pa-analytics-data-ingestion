@@ -70,7 +70,7 @@ spring:
           destination: "\${KAFKA_TOPIC_DATA_EVENTS:p4pa-payhub-data-events-evh}"
           group: "\${KAFKA_DATA_EVENTS_GROUP_ID:analytics-data-events-consumer-group}"
           consumer.auto-startup: "\${KAFKA_DATA_EVENTS_CONSUMER_ENABLED:true}"
-        audit-in-0:
+        auditConsumer-in-0:
           binder: kafka-audit-consumer
           content-type: "\${KAFKA_CONTENT_TYPE:application/json}"
           destination: "\${KAFKA_TOPIC_AUDIT:p4pa-payhub-audit-evh}"
@@ -101,7 +101,7 @@ spring:
                   ms: "\${KAFKA_PAYMENTS_REQUEST_CONNECTION_TIMEOUT_MS:\${KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MS:100000}}"
               standardHeaders: "\${KAFKA_PAYMENTS_STANDARD_HEADERS:\${KAFKA_CONSUMER_CONFIG_STANDARD_HEADERS:both}}"
               startOffset: "\${KAFKA_PAYMENTS_REQUEST_START_OFFSET:\${KAFKA_CONSUMER_CONFIG_START_OFFSET:earliest}}"
-          data-events-in-0:
+          dataEventsConsumer-in-0:
             consumer:
               autoCommitOffset: "\${KAFKA_DATA_EVENTS_AUTO_COMMIT:\${KAFKA_CONSUMER_CONFIG_AUTO_COMMIT:true}}"
               configuration:
@@ -114,7 +114,7 @@ spring:
                   ms: "\${KAFKA_DATA_EVENTS_REQUEST_CONNECTION_TIMEOUT_MS:\${KAFKA_CONSUMER_CONFIG_CONNECTION_TIMEOUT_MS:100000}}"
               standardHeaders: "\${KAFKA_DATA_EVENTS_STANDARD_HEADERS:\${KAFKA_CONSUMER_CONFIG_STANDARD_HEADERS:both}}"
               startOffset: "\${KAFKA_DATA_EVENTS_REQUEST_START_OFFSET:\${KAFKA_CONSUMER_CONFIG_START_OFFSET:earliest}}"
-          audit-in-0:
+          auditConsumer-in-0:
             consumer:
               autoCommitOffset: "\${KAFKA_AUDIT_AUTO_COMMIT:\${KAFKA_CONSUMER_CONFIG_AUTO_COMMIT:true}}"
               configuration:
