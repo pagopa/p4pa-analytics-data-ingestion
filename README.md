@@ -21,6 +21,10 @@ See [OpenAPI](openapi/generated.openapi.json), exposed through the following pat
 * `401`: Invalid access token provided, thus a new login is required;
 * `403`: Trying to access a not authorized resource.
 
+## 🌐 AsyncAPIs
+See [AsyncAPI](asyncapi/generated.asyncapi.json), exposed through the following path:
+* `/springwolf/asyncapi-ui.html`
+
 ## 🔎 Monitoring
 See available actuator endpoints through the following path:
 * `/actuator`

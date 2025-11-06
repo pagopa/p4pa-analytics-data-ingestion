@@ -36,6 +36,7 @@ repositories {
 }
 
 val springDocOpenApiVersion = "2.8.13"
+val springWolfAsyncApiVersion = "1.16.0"
 val janinoVersion = "3.1.12"
 val openApiToolsVersion = "0.2.7"
 val micrometerVersion = "1.5.4"
@@ -50,12 +51,20 @@ val guavaVersion = "33.5.0-jre"
 val mapStructVersion = "1.6.3"
 val postgresJdbcVersion = "42.7.7"
 val podamVersion = "8.0.2.RELEASE"
+val springCloudDepsVersion = "2025.0.0"
+
+dependencyManagement {
+  imports {
+    mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudDepsVersion")
+  }
+}
 
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+  implementation("org.springframework.cloud:spring-cloud-starter-stream-kafka")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
   implementation("org.springframework.boot:spring-boot-starter-aop")
@@ -63,6 +72,9 @@ dependencies {
     exclude(group = "org.apache.commons", module = "commons-lang3")
   }
   implementation ("org.apache.commons:commons-lang3:${commonsLang3Version}")
+  implementation ("io.github.springwolf:springwolf-kafka:${springWolfAsyncApiVersion}")
+  implementation("io.github.springwolf:springwolf-ui:${springWolfAsyncApiVersion}")
+  implementation("io.github.springwolf:springwolf-cloud-stream:${springWolfAsyncApiVersion}")
   implementation("org.codehaus.janino:janino:$janinoVersion")
   implementation("io.micrometer:micrometer-tracing-bridge-otel:$micrometerVersion")
   implementation("io.micrometer:micrometer-registry-prometheus")
@@ -95,6 +107,7 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.mockito:mockito-core")
   testImplementation("org.projectlombok:lombok")
+  testImplementation("com.h2database:h2")
   testImplementation ("uk.co.jemos.podam:podam:${podamVersion}")
 }
 
@@ -144,7 +157,8 @@ tasks.register("dependenciesBuild") {
   dependsOn(
     "openApiGenerate",
     "openApiGenerateP4PAAUTH",
-    "openApiGenerateDEBTPOSITIONS"
+    "openApiGenerateDEBTPOSITIONS",
+    "openApiGeneratePROCESSEXECUTIONS"
   )
 }
 
@@ -234,6 +248,42 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
   ))
   importMappings.set(mapOf(
     "Resource" to "org.springframework.core.io.Resource"
+  ))
+  configOptions.set(mapOf(
+    "swaggerAnnotations" to "false",
+    "openApiNullable" to "false",
+    "dateLibrary" to "java8",
+    "serializableModel" to "true",
+    "useSpringBoot3" to "true",
+    "useJakartaEe" to "true",
+    "useOneOfInterfaces" to "true",
+    "useBeanValidation" to "true",
+    "serializationLibrary" to "jackson",
+    "generateSupportingFiles" to "true",
+    "generateConstructorWithAllArgs" to "true",
+    "generatedConstructorWithRequiredArgs" to "true",
+    "enumPropertyNaming" to "original",
+    "additionalModelTypeAnnotations" to "@lombok.experimental.SuperBuilder(toBuilder = true)"
+  ))
+  additionalProperties.set(mapOf(
+    "removeEnumValuePrefix" to "false"
+  ))
+  library.set("resttemplate")
+}
+
+tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("openApiGeneratePROCESSEXECUTIONS") {
+  group = "openapi"
+  description = "description"
+
+  generatorName.set("java")
+  remoteInputSpec.set("https://raw.githubusercontent.com/pagopa/p4pa-process-executions/refs/heads/$targetEnv/openapi/generated.openapi.json")
+  outputDir.set("$projectDir/build/generated")
+  invokerPackage.set("it.gov.pagopa.pu.processexecutions.generated")
+  apiPackage.set("it.gov.pagopa.pu.processexecutions.controller.generated")
+  modelPackage.set("it.gov.pagopa.pu.processexecutions.dto.generated")
+  typeMappings.set(mapOf(
+    "LocalDateTime" to "java.time.LocalDateTime",
+    "string+binary" to "Resource"
   ))
   configOptions.set(mapOf(
     "swaggerAnnotations" to "false",
