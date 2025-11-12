@@ -115,6 +115,22 @@ public class UtilitiesTest {
   }
 
   @Test
+  void givenLocalDateTimeToOffsetDateTimeThenSuccess(){
+    //GIVEN
+    Instant instant = Instant.parse("2025-01-09T10:30:00Z");
+    OffsetDateTime expectedOffsetDateTime = instant.atZone(Constants.ZONEID).toOffsetDateTime();
+    //WHEN
+    OffsetDateTime result = Utilities.localDateTimeToOffsetDateTime(LocalDateTime.ofInstant(instant, Constants.ZONEID));
+    //THEN
+    assertEquals(expectedOffsetDateTime, result);
+  }
+
+  @Test
+  void givenLocalDateTimeToOffsetDateTimeWhenNullThenSuccess() {
+    assertNull(Utilities.localDateTimeToOffsetDateTime(null));
+  }
+
+  @Test
   void givenOffsetDateTimeToLocalDateTimeThenSuccess() {
     OffsetDateTime offsetDateTime = OffsetDateTime.of(2025, 1, 9, 10, 30, 0, 0, ZoneOffset.UTC);
     LocalDateTime expectedLocalDateTime = LocalDateTime.of(2025, 1, 9, 10, 30, 0);
@@ -136,6 +152,17 @@ public class UtilitiesTest {
     String workflowId = Utilities.generateWorkflowId("00000020f51bb4362eee2a4d", Utilities.class);
 
     assertEquals("Utilities-00000020f51bb4362eee2a4d", workflowId);
+  }
+
+  @Test
+  void whenGetEpochOffsetDateTimeThenSuccess() {
+    //GIVEN
+    Instant instant = Instant.parse("1970-01-01T00:00:00Z");
+    OffsetDateTime expectedOffsetDateTime = instant.atZone(Constants.ZONEID).toOffsetDateTime();
+    //WHEN
+    OffsetDateTime result = Utilities.getEpochOffsetDateTime();
+    //THEN
+    assertEquals(expectedOffsetDateTime, result);
   }
 
   @Test

@@ -9,10 +9,7 @@ import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+import java.time.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -57,9 +54,22 @@ public class Utilities {
     return instant != null ? instant.atZone(Constants.ZONEID).toOffsetDateTime() : null;
   }
 
+  @Named("localDateTimeToOffsetDateTime")
+  public static OffsetDateTime localDateTimeToOffsetDateTime(LocalDateTime localDateTime) {
+    return localDateTime != null ? localDateTime.atZone(Constants.ZONEID).toOffsetDateTime() : null;
+  }
+
   @Named("offsetDateTimeToLocalDateTime")
   public static LocalDateTime offsetDateTimeToLocalDateTime(OffsetDateTime offsetDateTime) {
     return offsetDateTime != null ? offsetDateTime.toLocalDateTime() : null;
+  }
+
+  public static OffsetDateTime getEpochOffsetDateTime() {
+    return OffsetDateTime.of(
+      LocalDate.EPOCH,
+      LocalTime.MIN,
+      ZoneOffset.UTC
+    ).atZoneSameInstant(Constants.ZONEID).toOffsetDateTime();
   }
 
   public static String getTraceId() {

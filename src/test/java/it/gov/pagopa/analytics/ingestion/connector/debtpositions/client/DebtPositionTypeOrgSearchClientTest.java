@@ -53,7 +53,7 @@ class DebtPositionTypeOrgSearchClientTest {
       .thenReturn(debtPositionTypeOrgSearchControllerApiMock);
 
     when(debtPositionTypeOrgSearchControllerApiMock
-      .crudDebtPositionTypeOrgsFindByUpdateDateGreaterThanEqualOrderByUpdateDateAsc(lastUpdateDate))
+      .crudDebtPositionTypeOrgsFindByUpdateDateGreaterThanOrderByUpdateDateAsc(lastUpdateDate))
       .thenReturn(collectionModel);
 
     List<DebtPositionTypeOrg> result = debtPositionTypeOrgSearchClient.getUpdatedDebtPositionTypeOrgs(lastUpdateDate, accessToken);
@@ -74,7 +74,7 @@ class DebtPositionTypeOrgSearchClientTest {
       .thenReturn(debtPositionTypeOrgSearchControllerApiMock);
 
     when(debtPositionTypeOrgSearchControllerApiMock
-      .crudDebtPositionTypeOrgsFindByUpdateDateGreaterThanEqualOrderByUpdateDateAsc(lastUpdateDate))
+      .crudDebtPositionTypeOrgsFindByUpdateDateGreaterThanOrderByUpdateDateAsc(lastUpdateDate))
       .thenReturn(collectionModel);
 
     List<DebtPositionTypeOrg> result = debtPositionTypeOrgSearchClient.getUpdatedDebtPositionTypeOrgs(lastUpdateDate, accessToken);
