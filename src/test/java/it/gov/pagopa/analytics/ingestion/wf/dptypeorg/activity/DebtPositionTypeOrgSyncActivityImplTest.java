@@ -40,12 +40,12 @@ class DebtPositionTypeOrgSyncActivityImplTest {
   @Test
   void givenNotNullLastDateWhenSyncDebtPositionTypeOrgThenSuccess() {
     //GIVEN
-    OffsetDateTime now = OffsetDateTime.now();
+    OffsetDateTime offsetDateTime = OffsetDateTime.now();
     Mockito
       .when(debtPositionTypeOrgRepositoryMock.findMaxUpdateDate())
-      .thenReturn(now.toLocalDateTime());
+      .thenReturn(offsetDateTime.toLocalDateTime());
     Mockito
-      .when(debtPositionTypeOrgServiceMock.getUpdatedDebtPositionTypeOrgs(ArgumentMatchers.eq(now)))
+      .when(debtPositionTypeOrgServiceMock.getUpdatedDebtPositionTypeOrgs(offsetDateTime))
       .thenReturn(
         List.of(
           buildPUDebtPositionTypeOrg(1L),
@@ -63,6 +63,7 @@ class DebtPositionTypeOrgSyncActivityImplTest {
     Integer actualInsertCount = activity.syncDebtPositionTypeOrg();
     //THEN
     Assertions.assertEquals(expectedInsertCount, actualInsertCount);
+    Mockito.verify(debtPositionTypeOrgMapperMock, Mockito.times(2)).mapDebtPositionTypeOrg(ArgumentMatchers.any());
   }
 
   @Test
@@ -91,6 +92,7 @@ class DebtPositionTypeOrgSyncActivityImplTest {
     Integer actualInsertCount = activity.syncDebtPositionTypeOrg();
     //THEN
     Assertions.assertEquals(expectedInsertCount, actualInsertCount);
+    Mockito.verify(debtPositionTypeOrgMapperMock, Mockito.times(3)).mapDebtPositionTypeOrg(ArgumentMatchers.any());
   }
 
   private static List<it.gov.pagopa.analytics.ingestion.model.DebtPositionTypeOrg> buildAnalyticsDebtPositionTypeOrgList(int num) {
