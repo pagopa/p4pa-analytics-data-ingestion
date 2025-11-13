@@ -4,7 +4,7 @@ package it.gov.pagopa.analytics.ingestion.wf.dptypeorg.wf;
 import io.temporal.spring.boot.WorkflowImpl;
 import it.gov.pagopa.analytics.ingestion.config.temporal.TemporalWFImplementationCustomizer;
 import it.gov.pagopa.analytics.ingestion.utils.TaskQueueConstants;
-import it.gov.pagopa.analytics.ingestion.wf.dptypeorg.activity.SampleActivity;
+import it.gov.pagopa.analytics.ingestion.wf.dptypeorg.activity.DebtPositionTypeOrgSyncActivity;
 import it.gov.pagopa.analytics.ingestion.wf.dptypeorg.config.DebtPositionTypeOrgsIngestionWfConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContextAware;
 @WorkflowImpl(taskQueues = TaskQueueConstants.TASK_QUEUE_DATA_INGESTION)
 public class DebtPositionTypeOrgsIngestionWFImpl implements DebtPositionTypeOrgsIngestionWF, ApplicationContextAware {
 
-  private SampleActivity sampleActivity;
+  private DebtPositionTypeOrgSyncActivity debtPositionTypeOrgSyncActivity;
 
 
   /**
@@ -28,15 +28,14 @@ public class DebtPositionTypeOrgsIngestionWFImpl implements DebtPositionTypeOrgs
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     DebtPositionTypeOrgsIngestionWfConfig wfConfig = applicationContext.getBean(DebtPositionTypeOrgsIngestionWfConfig.class);
-    sampleActivity = wfConfig.buildSampleActivityStub();
-
+    debtPositionTypeOrgSyncActivity = wfConfig.buildDebtPositionTypeOrgSyncActivityStub();
   }
 
   @Override
-  public String ingestDebtPositionTypeOrgs() {
-    log.info("Executing AssessmentsClassifications DataMart process WF");
-    String result = sampleActivity.executeSampleActivity();
-    log.info("AssessmentsClassifications process WF completed: {}", result);
+  public Integer ingestDebtPositionTypeOrgs() {
+    log.info("Executing DebtPositionTypeOrgs ingestion WF");
+    Integer result = debtPositionTypeOrgSyncActivity.syncDebtPositionTypeOrg();
+    log.info("DebtPositionTypeOrgs ingestion WF completed: {}", result);
     return result;
   }
 }
