@@ -34,17 +34,21 @@ public class DebtPositionTypeOrgSyncActivityImpl implements DebtPositionTypeOrgS
 
   @Override
   public Integer syncDebtPositionTypeOrg() {
+    log.info("Starting synchronization of DebtPositionTypeOrg");
     OffsetDateTime lastProcessedUpdateDate = Utilities.localDateTimeToOffsetDateTime(
       debtPositionTypeOrgRepository.findMaxUpdateDate()
     );
+    log.info("Fetched last updateDate for stored DebtPositionTypeOrg: {}", lastProcessedUpdateDate);
     List<DebtPositionTypeOrg> updatedDebtPositionTypeOrgs = debtPositionTypeOrgService
       .getUpdatedDebtPositionTypeOrgs(
         lastProcessedUpdateDate == null ? Utilities.getEpochOffsetDateTime() : lastProcessedUpdateDate
       );
-    return debtPositionTypeOrgRepository.saveAll(
+    int batchSizeOfStoredEntities = debtPositionTypeOrgRepository.saveAll(
       updatedDebtPositionTypeOrgs.stream()
         .map(debtPositionTypeOrgMapper::mapDebtPositionTypeOrg)
         .toList()
     ).size();
+    log.info("Batch size of stored DebtPositionTypeOrg entities: {}", batchSizeOfStoredEntities);
+    return batchSizeOfStoredEntities;
   }
 }
