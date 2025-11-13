@@ -31,6 +31,8 @@ spring:
       - task-queue: DataIngestionWF
         capacity:
           max-concurrent-workflow-task-pollers: "\${WF_DATA_INGESTION_POLLER_SIZE:3}"
+        activity-beans:
+          - debtPositionTypeOrgSyncActivityImpl
   cloud:
     function:
       definition: paymentsConsumer;dataEventsConsumer;auditConsumer

@@ -6,11 +6,10 @@ import io.temporal.workflow.WorkflowMethod;
 
 
 /**
- * Workflow to build DataMart AssessmentsClassifications
+ * Workflow to ingest DebtPositionTypeOrgs
  */
 @WorkflowInterface
 public interface DebtPositionTypeOrgsIngestionWF {
   @WorkflowMethod
-  String ingestDebtPositionTypeOrgs();
+  Integer ingestDebtPositionTypeOrgs();
 }
-
