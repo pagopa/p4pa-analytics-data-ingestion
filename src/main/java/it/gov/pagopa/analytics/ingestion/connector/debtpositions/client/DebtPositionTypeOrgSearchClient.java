@@ -21,7 +21,7 @@ public class DebtPositionTypeOrgSearchClient {
 
   public List<DebtPositionTypeOrg> getUpdatedDebtPositionTypeOrgs(OffsetDateTime lastUpdateDate, String accessToken) {
     PagedModelDebtPositionTypeOrgEmbedded embedded = debtPositionApisHolder.getDebtPositionTypeOrgSearchControllerApi(accessToken)
-      .crudDebtPositionTypeOrgsFindByUpdateDateGreaterThanEqualOrderByUpdateDateAsc(
+      .crudDebtPositionTypeOrgsFindByUpdateDateGreaterThanOrderByUpdateDateAsc(
         lastUpdateDate
       ).getEmbedded();
     return embedded!=null
