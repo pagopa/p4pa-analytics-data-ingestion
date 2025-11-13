@@ -18,6 +18,7 @@ import java.time.OffsetDateTime;
 @JsonSubTypes({
   @JsonSubTypes.Type(value = IngestionDataEventDTO.class, name = "INGESTION"),
   @JsonSubTypes.Type(value = ExportDataEventDTO.class, name = "EXPORT_FILE"),
+  @JsonSubTypes.Type(value = AssessmentDataEventDTO.class, name = "ASSESSMENTS_CLASSIFICATION"),
 })
 public class DataEventDTO <T> {
   private String eventId;

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.analytics.ingestion.config.json.JsonConfig;
 import it.gov.pagopa.analytics.ingestion.event.dataevents.enums.DataEventType;
+import it.gov.pagopa.analytics.ingestion.model.AssessmentsClassification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
@@ -19,7 +20,8 @@ class DataEventDTOTest {
 
   private final Map<DataEventType, Class<? extends DataEventDTO<?>>> enum2ExpectedModel = Map.ofEntries(
     Map.entry(DataEventType.INGESTION, IngestionDataEventDTO.class),
-    Map.entry(DataEventType.EXPORT_FILE, ExportDataEventDTO.class)
+    Map.entry(DataEventType.EXPORT_FILE, ExportDataEventDTO.class),
+    Map.entry(DataEventType.ASSESSMENTS_CLASSIFICATION, AssessmentDataEventDTO.class)
   );
 
   private final ObjectMapper objectMapper = new JsonConfig().objectMapper();

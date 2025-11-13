@@ -62,6 +62,378 @@
           "\"I\""
         ]
       },
+      "AssessmentDataEventDTO": {
+        "type": "object",
+        "examples": [
+          {
+            "eventDateTime": "2015-07-20T15:49:04-07:00",
+            "eventDescription": "string",
+            "eventId": "string",
+            "eventType": "INGESTION",
+            "payload": {
+              "assessmentId": 0,
+              "assessmentName": "string",
+              "assessmentsDetailList": [
+                {
+                  "_links": {
+                    "key": {
+                      "deprecation": "string",
+                      "href": "string",
+                      "hreflang": "string",
+                      "name": "string",
+                      "profile": "string",
+                      "templated": true,
+                      "title": "string",
+                      "type": "string"
+                    }
+                  },
+                  "amountCents": 0,
+                  "amountSubmitted": true,
+                  "assessmentCode": "string",
+                  "assessmentDescription": "string",
+                  "assessmentDetailId": 0,
+                  "assessmentId": 0,
+                  "classificationLabel": "PAID",
+                  "creationDate": "2015-07-20T15:49:04-07:00",
+                  "dateReceipt": "2015-07-20T15:49:04-07:00",
+                  "dateReporting": "2015-07-20T15:49:04-07:00",
+                  "dateTreasury": "2015-07-20T15:49:04-07:00",
+                  "debtPositionTypeOrgCode": "string",
+                  "debtPositionTypeOrgId": 0,
+                  "debtorFiscalCodeHash": "YmFzZTY0LWV4YW1wbGU=",
+                  "iud": "string",
+                  "iur": "string",
+                  "iuv": "string",
+                  "officeCode": "string",
+                  "officeDescription": "string",
+                  "organizationId": 0,
+                  "paymentDateTime": "2015-07-20T15:49:04-07:00",
+                  "receiptId": 0,
+                  "sectionCode": "string",
+                  "sectionDescription": "string",
+                  "updateDate": "2015-07-20T15:49:04-07:00",
+                  "updateOperatorExternalId": "string",
+                  "updateTraceId": "string"
+                }
+              ],
+              "debtPositionTypeOrgCode": "string",
+              "flagManualGeneration": true,
+              "iud": "string",
+              "iur": "string",
+              "iuv": "string",
+              "operatorExternalUserId": "string",
+              "organizationId": 0,
+              "printed": true,
+              "status": "CLOSED"
+            },
+            "traceId": "string"
+          }
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataEventDTOObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "payload": {
+                "$ref": "#/components/schemas/AssessmentEventDTO"
+              }
+            }
+          }
+        ]
+      },
+      "AssessmentEventDTO": {
+        "title": "AssessmentEventDTO",
+        "type": "object",
+        "properties": {
+          "assessmentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "assessmentName": {
+            "type": "string"
+          },
+          "assessmentsDetailList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssessmentsDetail"
+            }
+          },
+          "debtPositionTypeOrgCode": {
+            "type": "string"
+          },
+          "flagManualGeneration": {
+            "type": "boolean"
+          },
+          "iud": {
+            "type": "string"
+          },
+          "iur": {
+            "type": "string"
+          },
+          "iuv": {
+            "type": "string"
+          },
+          "operatorExternalUserId": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "printed": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/AssessmentStatus"
+          }
+        },
+        "examples": [
+          {
+            "assessmentId": 0,
+            "assessmentName": "string",
+            "assessmentsDetailList": [
+              {
+                "_links": {
+                  "key": {
+                    "deprecation": "string",
+                    "href": "string",
+                    "hreflang": "string",
+                    "name": "string",
+                    "profile": "string",
+                    "templated": true,
+                    "title": "string",
+                    "type": "string"
+                  }
+                },
+                "amountCents": 0,
+                "amountSubmitted": true,
+                "assessmentCode": "string",
+                "assessmentDescription": "string",
+                "assessmentDetailId": 0,
+                "assessmentId": 0,
+                "classificationLabel": "PAID",
+                "creationDate": "2015-07-20T15:49:04-07:00",
+                "dateReceipt": "2015-07-20T15:49:04-07:00",
+                "dateReporting": "2015-07-20T15:49:04-07:00",
+                "dateTreasury": "2015-07-20T15:49:04-07:00",
+                "debtPositionTypeOrgCode": "string",
+                "debtPositionTypeOrgId": 0,
+                "debtorFiscalCodeHash": "YmFzZTY0LWV4YW1wbGU=",
+                "iud": "string",
+                "iur": "string",
+                "iuv": "string",
+                "officeCode": "string",
+                "officeDescription": "string",
+                "organizationId": 0,
+                "paymentDateTime": "2015-07-20T15:49:04-07:00",
+                "receiptId": 0,
+                "sectionCode": "string",
+                "sectionDescription": "string",
+                "updateDate": "2015-07-20T15:49:04-07:00",
+                "updateOperatorExternalId": "string",
+                "updateTraceId": "string"
+              }
+            ],
+            "debtPositionTypeOrgCode": "string",
+            "flagManualGeneration": true,
+            "iud": "string",
+            "iur": "string",
+            "iuv": "string",
+            "operatorExternalUserId": "string",
+            "organizationId": 0,
+            "printed": true,
+            "status": "CLOSED"
+          }
+        ]
+      },
+      "AssessmentStatus": {
+        "title": "AssessmentStatus",
+        "type": "string",
+        "enum": [
+          "CLOSED",
+          "CANCELLED",
+          "ACTIVE"
+        ],
+        "examples": [
+          "\"CLOSED\""
+        ]
+      },
+      "AssessmentsDetail": {
+        "title": "AssessmentsDetail",
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Link"
+            }
+          },
+          "amountCents": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "amountSubmitted": {
+            "type": "boolean"
+          },
+          "assessmentCode": {
+            "type": "string"
+          },
+          "assessmentDescription": {
+            "type": "string"
+          },
+          "assessmentDetailId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "assessmentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "classificationLabel": {
+            "$ref": "#/components/schemas/ClassificationLabel"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateReceipt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateReporting": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateTreasury": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "debtPositionTypeOrgCode": {
+            "type": "string"
+          },
+          "debtPositionTypeOrgId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "debtorFiscalCodeHash": {
+            "type": "string",
+            "format": "byte"
+          },
+          "iud": {
+            "type": "string"
+          },
+          "iur": {
+            "type": "string"
+          },
+          "iuv": {
+            "type": "string"
+          },
+          "officeCode": {
+            "type": "string"
+          },
+          "officeDescription": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "receiptId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sectionCode": {
+            "type": "string"
+          },
+          "sectionDescription": {
+            "type": "string"
+          },
+          "updateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateOperatorExternalId": {
+            "type": "string"
+          },
+          "updateTraceId": {
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "_links": {
+              "key": {
+                "deprecation": "string",
+                "href": "string",
+                "hreflang": "string",
+                "name": "string",
+                "profile": "string",
+                "templated": true,
+                "title": "string",
+                "type": "string"
+              }
+            },
+            "amountCents": 0,
+            "amountSubmitted": true,
+            "assessmentCode": "string",
+            "assessmentDescription": "string",
+            "assessmentDetailId": 0,
+            "assessmentId": 0,
+            "classificationLabel": "PAID",
+            "creationDate": "2015-07-20T15:49:04-07:00",
+            "dateReceipt": "2015-07-20T15:49:04-07:00",
+            "dateReporting": "2015-07-20T15:49:04-07:00",
+            "dateTreasury": "2015-07-20T15:49:04-07:00",
+            "debtPositionTypeOrgCode": "string",
+            "debtPositionTypeOrgId": 0,
+            "debtorFiscalCodeHash": "YmFzZTY0LWV4YW1wbGU=",
+            "iud": "string",
+            "iur": "string",
+            "iuv": "string",
+            "officeCode": "string",
+            "officeDescription": "string",
+            "organizationId": 0,
+            "paymentDateTime": "2015-07-20T15:49:04-07:00",
+            "receiptId": 0,
+            "sectionCode": "string",
+            "sectionDescription": "string",
+            "updateDate": "2015-07-20T15:49:04-07:00",
+            "updateOperatorExternalId": "string",
+            "updateTraceId": "string"
+          }
+        ],
+        "required": [
+          "amountCents",
+          "amountSubmitted",
+          "assessmentId",
+          "debtPositionTypeOrgCode",
+          "debtPositionTypeOrgId",
+          "debtorFiscalCodeHash",
+          "iud",
+          "iur",
+          "iuv",
+          "organizationId",
+          "sectionCode"
+        ]
+      },
+      "ClassificationLabel": {
+        "title": "ClassificationLabel",
+        "type": "string",
+        "enum": [
+          "PAID",
+          "REPORTED",
+          "CASHED"
+        ],
+        "examples": [
+          "\"PAID\""
+        ]
+      },
       "DataEventDTOObject": {
         "discriminator": "eventType",
         "title": "DataEventDTO",
@@ -103,7 +475,8 @@
         "type": "string",
         "enum": [
           "INGESTION",
-          "EXPORT_FILE"
+          "EXPORT_FILE",
+          "ASSESSMENTS_CLASSIFICATION"
         ],
         "examples": [
           "\"INGESTION\""
@@ -855,6 +1228,48 @@
           "syncStatusTo"
         ]
       },
+      "Link": {
+        "title": "Link",
+        "type": "object",
+        "properties": {
+          "deprecation": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "hreflang": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "examples": [
+          {
+            "deprecation": "string",
+            "href": "string",
+            "hreflang": "string",
+            "name": "string",
+            "profile": "string",
+            "templated": true,
+            "title": "string",
+            "type": "string"
+          }
+        ]
+      },
       "PaymentEventDTOObject": {
         "discriminator": "eventType",
         "title": "PaymentEventDTO",
@@ -1268,6 +1683,9 @@
             "oneOf": [
               {
                 "$ref": "#/components/schemas/DataEventDTOObject"
+              },
+              {
+                "$ref": "#/components/schemas/AssessmentDataEventDTO"
               },
               {
                 "$ref": "#/components/schemas/ExportDataEventDTO"
