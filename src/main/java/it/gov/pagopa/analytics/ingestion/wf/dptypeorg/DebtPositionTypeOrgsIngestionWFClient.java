@@ -24,14 +24,15 @@ public class DebtPositionTypeOrgsIngestionWFClient {
   }
 
   public WorkflowCreatedDTO ingestDebtPositionTypeOrgs() {
-    log.info("Starting synchronizeTaxonomy {}", ON_DEMAND);
+    log.info("Starting ingestion of DebtPositionTypeOrgs {}", ON_DEMAND);
     String taskQueue = TaskQueueConstants.TASK_QUEUE_DATA_INGESTION;
     String workflowId = generateWorkflowId(ON_DEMAND, DebtPositionTypeOrgsIngestionWF.class);
 
     DebtPositionTypeOrgsIngestionWF workflow = workflowService.buildWorkflowStub(
       DebtPositionTypeOrgsIngestionWF.class,
       taskQueue,
-      workflowId);
+      workflowId
+    );
 
     return workflowClientService.start(workflow::ingestDebtPositionTypeOrgs);
   }

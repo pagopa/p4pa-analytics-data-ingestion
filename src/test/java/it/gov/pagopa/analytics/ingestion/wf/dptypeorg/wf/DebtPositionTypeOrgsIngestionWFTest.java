@@ -1,6 +1,6 @@
 package it.gov.pagopa.analytics.ingestion.wf.dptypeorg.wf;
 
-import it.gov.pagopa.analytics.ingestion.wf.dptypeorg.activity.SampleActivity;
+import it.gov.pagopa.analytics.ingestion.wf.dptypeorg.activity.DebtPositionTypeOrgSyncActivity;
 import it.gov.pagopa.analytics.ingestion.wf.dptypeorg.config.DebtPositionTypeOrgsIngestionWfConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 class DebtPositionTypeOrgsIngestionWFTest {
 
   @Mock
-  private SampleActivity sampleActivityMock;
+  private DebtPositionTypeOrgSyncActivity debtPositionTypeOrgSyncActivityMock;
 
   private DebtPositionTypeOrgsIngestionWFImpl wf;
 
@@ -27,7 +27,7 @@ class DebtPositionTypeOrgsIngestionWFTest {
   void setUp() {
     DebtPositionTypeOrgsIngestionWfConfig debtPositionTypeOrgsIngestionWfConfigMock = mock(DebtPositionTypeOrgsIngestionWfConfig.class);
     ApplicationContext applicationContextMock = mock(ApplicationContext.class);
-    when(debtPositionTypeOrgsIngestionWfConfigMock.buildSampleActivityStub()).thenReturn(sampleActivityMock);
+    when(debtPositionTypeOrgsIngestionWfConfigMock.buildDebtPositionTypeOrgSyncActivityStub()).thenReturn(debtPositionTypeOrgSyncActivityMock);
 
     when(applicationContextMock.getBean(DebtPositionTypeOrgsIngestionWfConfig.class)).thenReturn(debtPositionTypeOrgsIngestionWfConfigMock);
 
@@ -38,18 +38,19 @@ class DebtPositionTypeOrgsIngestionWFTest {
   @AfterEach
   void verifyNoMoreInteractions() {
     Mockito.verifyNoMoreInteractions(
-      sampleActivityMock);
+      debtPositionTypeOrgSyncActivityMock
+    );
   }
   @Test
   void givenSuccessfulSyncWhenIngestDebtPositionTypeOrgsThenLogSynchronizedTaxonomies() {
     // Given
-    String expectedResult = "OK";
-    when(sampleActivityMock.executeSampleActivity()).thenReturn(expectedResult);
+    Integer expectedResult = 1;
+    when(debtPositionTypeOrgSyncActivityMock.syncDebtPositionTypeOrg()).thenReturn(expectedResult);
 
     // When
-    String result = wf.ingestDebtPositionTypeOrgs();
+    Integer actualResult = wf.ingestDebtPositionTypeOrgs();
 
     // Then
-    Assertions.assertSame(expectedResult, result);
+    Assertions.assertSame(expectedResult, actualResult);
   }
 }
