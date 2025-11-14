@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.analytics.ingestion.config.json.JsonConfig;
 import it.gov.pagopa.analytics.ingestion.event.dataevents.enums.DataEventType;
-import it.gov.pagopa.analytics.ingestion.model.AssessmentsClassification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;

@@ -21,14 +21,14 @@ class DataEventsConsumerTest {
   @InjectMocks
   private DataEventsConsumer dataEventsConsumer;
 
-  private final String MOCK_EVENT_ID = "event-id-001";
+  private final String mockEventId = "event-id-001";
 
   @Test
   void givenAssessmentsClassificationEventTypeWhenAcceptThenVerify() {
     // GIVEN
     AssessmentEventDTO assessmentData = new AssessmentEventDTO();
     DataEventDTO<AssessmentEventDTO> eventDTO = new AssessmentDataEventDTO();
-    eventDTO.setEventId(MOCK_EVENT_ID);
+    eventDTO.setEventId(mockEventId);
     eventDTO.setEventType(ASSESSMENTS_CLASSIFICATION);
     eventDTO.setPayload(assessmentData);
 
@@ -44,7 +44,7 @@ class DataEventsConsumerTest {
     // GIVEN
     ExportDataDTO exportData = new ExportDataDTO();
     DataEventDTO<ExportDataDTO> eventDTO = new ExportDataEventDTO();
-    eventDTO.setEventId(MOCK_EVENT_ID);
+    eventDTO.setEventId(mockEventId);
     eventDTO.setEventType(EXPORT_FILE);
     eventDTO.setPayload(exportData);
 
@@ -60,7 +60,7 @@ class DataEventsConsumerTest {
     // GIVEN
     IngestionDataDTO ingestionData = new IngestionDataDTO();
     DataEventDTO<IngestionDataDTO> eventDTO = new IngestionDataEventDTO();
-    eventDTO.setEventId(MOCK_EVENT_ID);
+    eventDTO.setEventId(mockEventId);
     eventDTO.setEventType(INGESTION);
     eventDTO.setPayload(ingestionData);
 
