@@ -1,7 +1,5 @@
 package it.gov.pagopa.analytics.ingestion.event.dataevents.dto;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.gov.pagopa.analytics.ingestion.event.dataevents.enums.DataEventType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,12 +12,6 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "eventType", defaultImpl = DataEventDTO.class, visible = true)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = IngestionDataEventDTO.class, name = "INGESTION"),
-  @JsonSubTypes.Type(value = ExportDataEventDTO.class, name = "EXPORT_FILE"),
-  @JsonSubTypes.Type(value = AssessmentDataEventDTO.class, name = "ASSESSMENTS_CLASSIFICATION"),
-})
 public class DataEventDTO {
   private String eventId;
   private String traceId;

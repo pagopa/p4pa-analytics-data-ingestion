@@ -32,7 +32,7 @@ class DataEventsConsumerTest {
   @Test
   void givenAssessmentsClassificationEventTypeWhenAcceptThenVerify() throws JsonProcessingException {
     // GIVEN
-    DataEventDTO eventDTO = new AssessmentDataEventDTO();
+    DataEventDTO eventDTO = new DataEventDTO();
     eventDTO.setEventType(ASSESSMENTS_CLASSIFICATION);
     eventDTO.setEventId("test-event-123");
 
@@ -47,7 +47,7 @@ class DataEventsConsumerTest {
   @Test
   void givenExportEventTypeWhenAcceptThenVerify() throws JsonProcessingException {
     // GIVEN
-    DataEventDTO eventDTO = new AssessmentDataEventDTO();
+    DataEventDTO eventDTO = new DataEventDTO();
     eventDTO.setEventType(EXPORT_FILE);
     eventDTO.setEventId("test-event-123");
 
@@ -63,7 +63,7 @@ class DataEventsConsumerTest {
   @Test
   void givenIngestionEventTypeWhenAcceptThenVerify() throws JsonProcessingException {
     // GIVEN
-    DataEventDTO eventDTO = new AssessmentDataEventDTO();
+    DataEventDTO eventDTO = new DataEventDTO();
     eventDTO.setEventType(INGESTION);
     eventDTO.setEventId("test-event-123");
 
