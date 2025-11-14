@@ -81,7 +81,7 @@ class DataEventsConsumerTest {
     // GIVEN
     String malformedJson = "{ \"malformed\": json, }";
 
-    when(objectMapper.readValue(eq(malformedJson), eq(DataEventDTO.class)))
+    when(objectMapper.readValue(malformedJson, DataEventDTO.class))
       .thenThrow(new JsonProcessingException("Simulated JSON parsing error") {});
 
     // WHEN / THEN
