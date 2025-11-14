@@ -9,5 +9,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-public class ExportDataEventDTO extends DataEventDTO<ExportDataDTO>{
+public class ExportDataEventDTO extends DataEventDTO {
 }

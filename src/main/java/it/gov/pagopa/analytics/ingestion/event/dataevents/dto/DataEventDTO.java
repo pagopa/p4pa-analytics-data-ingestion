@@ -20,12 +20,11 @@ import java.time.OffsetDateTime;
   @JsonSubTypes.Type(value = ExportDataEventDTO.class, name = "EXPORT_FILE"),
   @JsonSubTypes.Type(value = AssessmentDataEventDTO.class, name = "ASSESSMENTS_CLASSIFICATION"),
 })
-public class DataEventDTO <T> {
+public class DataEventDTO {
   private String eventId;
   private String traceId;
   private DataEventType eventType;
   private OffsetDateTime eventDateTime;
-  private T payload;
   private String eventDescription;
 }
 

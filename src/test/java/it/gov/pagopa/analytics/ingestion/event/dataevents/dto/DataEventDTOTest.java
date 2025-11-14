@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 class DataEventDTOTest {
 
-  private final Map<DataEventType, Class<? extends DataEventDTO<?>>> enum2ExpectedModel = Map.ofEntries(
+  private final Map<DataEventType, Class<? extends DataEventDTO>> enum2ExpectedModel = Map.ofEntries(
     Map.entry(DataEventType.INGESTION, IngestionDataEventDTO.class),
     Map.entry(DataEventType.EXPORT_FILE, ExportDataEventDTO.class),
     Map.entry(DataEventType.ASSESSMENTS_CLASSIFICATION, AssessmentDataEventDTO.class)
@@ -43,7 +43,7 @@ class DataEventDTOTest {
       Arrays.stream(jsonSubTypes.value())
         .map(t -> (StringUtils.isNotBlank(t.name()) ? Stream.of(t.name()) : Arrays.stream(t.names()))
           .collect(Collectors.toMap(DataEventType::valueOf,
-            n -> (Class<? extends DataEventDTO<?>>)t.value())))
+            n -> (Class<? extends DataEventDTO>)t.value())))
         .reduce(new EnumMap<>(DataEventType.class), (acc, e) -> {
           acc.putAll(e);
           return acc;
@@ -53,22 +53,17 @@ class DataEventDTOTest {
 
   @Test
   void testSerialization() throws JsonProcessingException {
-    IngestionDataDTO payload = new IngestionDataDTO();
-    payload.setIngestionFlowFileId(1L);
-
     IngestionDataEventDTO expectedEvent = new IngestionDataEventDTO();
     expectedEvent.setEventId("eventId");
     expectedEvent.setEventType(DataEventType.INGESTION);
-    expectedEvent.setPayload(payload);
 
-    DataEventDTO<?> event = DataEventDTO.builder()
+    DataEventDTO event = DataEventDTO.builder()
       .eventId(expectedEvent.getEventId())
       .eventType(expectedEvent.getEventType())
-      .payload(payload)
       .build();
 
     String serialized = objectMapper.writeValueAsString(event);
-    DataEventDTO<?> result = objectMapper.readValue(serialized, DataEventDTO.class);
+    DataEventDTO result = objectMapper.readValue(serialized, DataEventDTO.class);
 
     Assertions.assertEquals(expectedEvent, result);
   }

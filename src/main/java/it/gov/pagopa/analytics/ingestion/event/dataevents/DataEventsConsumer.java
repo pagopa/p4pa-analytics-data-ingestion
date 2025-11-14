@@ -29,7 +29,7 @@ public class DataEventsConsumer implements Consumer<String> {
   @Override
   public void accept(String rawJsonEvent) {
     try {
-      DataEventDTO<?> paymentEventDTO = objectMapper.readValue(rawJsonEvent, DataEventDTO.class);
+      DataEventDTO paymentEventDTO = objectMapper.readValue(rawJsonEvent, DataEventDTO.class);
       if (INGESTION.equals(paymentEventDTO.getEventType())) {
         log.info("DataEvent received: {} occurred on IngestionFlowFile having eventId {}", paymentEventDTO.getEventType(), paymentEventDTO.getEventId());
       } else if (EXPORT_FILE.equals(paymentEventDTO.getEventType())) {
