@@ -28,8 +28,8 @@
     "p4pa-payhub-data-events-evh": {
       "address": "p4pa-payhub-data-events-evh",
       "messages": {
-        "DataEventDTOObject": {
-          "$ref": "#/components/messages/DataEventDTOObject"
+        "string": {
+          "$ref": "#/components/messages/string"
         }
       },
       "bindings": {
@@ -60,53 +60,6 @@
         ],
         "examples": [
           "\"I\""
-        ]
-      },
-      "DataEventDTOObject": {
-        "discriminator": "eventType",
-        "title": "DataEventDTO",
-        "type": "object",
-        "properties": {
-          "eventDateTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "eventDescription": {
-            "type": "string"
-          },
-          "eventId": {
-            "type": "string"
-          },
-          "eventType": {
-            "$ref": "#/components/schemas/DataEventType"
-          },
-          "payload": {
-            "type": "object"
-          },
-          "traceId": {
-            "type": "string"
-          }
-        },
-        "examples": [
-          {
-            "eventDateTime": "2015-07-20T15:49:04-07:00",
-            "eventDescription": "string",
-            "eventId": "string",
-            "eventType": "INGESTION",
-            "payload": { },
-            "traceId": "string"
-          }
-        ]
-      },
-      "DataEventType": {
-        "title": "DataEventType",
-        "type": "string",
-        "enum": [
-          "INGESTION",
-          "EXPORT_FILE"
-        ],
-        "examples": [
-          "\"INGESTION\""
         ]
       },
       "DebtPositionDTO": {
@@ -447,91 +400,6 @@
           "\"TO_SYNC\""
         ]
       },
-      "ExportDataDTO": {
-        "title": "ExportDataDTO",
-        "type": "object",
-        "properties": {
-          "exportDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "exportFileId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "exportFileType": {
-            "$ref": "#/components/schemas/ExportFileTypeEnum"
-          },
-          "exportedRows": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "fileSize": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "organizationId": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "examples": [
-          {
-            "exportDate": "2015-07-20",
-            "exportFileId": 0,
-            "exportFileType": "PAID",
-            "exportedRows": 0,
-            "fileSize": 0,
-            "organizationId": 0
-          }
-        ]
-      },
-      "ExportDataEventDTO": {
-        "type": "object",
-        "examples": [
-          {
-            "eventDateTime": "2015-07-20T15:49:04-07:00",
-            "eventDescription": "string",
-            "eventId": "string",
-            "eventType": "\"INGESTION\"",
-            "payload": {
-              "exportDate": "2015-07-20",
-              "exportFileId": 0,
-              "exportFileType": "PAID",
-              "exportedRows": 0,
-              "fileSize": 0,
-              "organizationId": 0
-            },
-            "traceId": "string"
-          }
-        ],
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataEventDTOObject"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "payload": {
-                "$ref": "#/components/schemas/ExportDataDTO"
-              }
-            }
-          }
-        ]
-      },
-      "ExportFileTypeEnum": {
-        "title": "ExportFileTypeEnum",
-        "type": "string",
-        "enum": [
-          "PAID",
-          "CLASSIFICATIONS",
-          "PAYMENTS_REPORTING",
-          "RECEIPTS_ARCHIVING"
-        ],
-        "examples": [
-          "\"PAID\""
-        ]
-      },
       "HeadersNotDocumented": {
         "title": "HeadersNotDocumented",
         "type": "object",
@@ -539,87 +407,6 @@
         "description": "There can be headers, but they are not explicitly documented.",
         "examples": [
           { }
-        ]
-      },
-      "IngestionDataDTO": {
-        "title": "IngestionDataDTO",
-        "type": "object",
-        "properties": {
-          "ingestionFlowFileId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "organizationId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "processedRows": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "status": {
-            "$ref": "#/components/schemas/IngestionFlowFileStatus"
-          },
-          "totalRows": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "examples": [
-          {
-            "ingestionFlowFileId": 0,
-            "organizationId": 0,
-            "processedRows": 0,
-            "status": "UPLOADED",
-            "totalRows": 0
-          }
-        ]
-      },
-      "IngestionDataEventDTO": {
-        "type": "object",
-        "examples": [
-          {
-            "eventDateTime": "2015-07-20T15:49:04-07:00",
-            "eventDescription": "string",
-            "eventId": "string",
-            "eventType": "\"INGESTION\"",
-            "payload": {
-              "ingestionFlowFileId": 0,
-              "organizationId": 0,
-              "processedRows": 0,
-              "status": "UPLOADED",
-              "totalRows": 0
-            },
-            "traceId": "string"
-          }
-        ],
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataEventDTOObject"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "payload": {
-                "$ref": "#/components/schemas/IngestionDataDTO"
-              }
-            }
-          }
-        ]
-      },
-      "IngestionFlowFileStatus": {
-        "title": "IngestionFlowFileStatus",
-        "type": "string",
-        "enum": [
-          "UPLOADED",
-          "PROCESSING",
-          "COMPLETED",
-          "ERROR",
-          "WAITING_FILE",
-          "WARNING"
-        ],
-        "examples": [
-          "\"UPLOADED\""
         ]
       },
       "InstallmentDTO": {
@@ -1258,32 +1045,6 @@
       }
     },
     "messages": {
-      "DataEventDTOObject": {
-        "headers": {
-          "$ref": "#/components/schemas/HeadersNotDocumented"
-        },
-        "payload": {
-          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
-          "schema": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/DataEventDTOObject"
-              },
-              {
-                "$ref": "#/components/schemas/ExportDataEventDTO"
-              },
-              {
-                "$ref": "#/components/schemas/IngestionDataEventDTO"
-              }
-            ]
-          }
-        },
-        "name": "DataEventDTOObject",
-        "title": "DataEventDTOObject",
-        "bindings": {
-          "kafka": { }
-        }
-      },
       "PaymentEventDTOObject": {
         "headers": {
           "$ref": "#/components/schemas/HeadersNotDocumented"
@@ -1355,7 +1116,7 @@
       },
       "messages": [
         {
-          "$ref": "#/channels/p4pa-payhub-data-events-evh/messages/DataEventDTOObject"
+          "$ref": "#/channels/p4pa-payhub-data-events-evh/messages/string"
         }
       ]
     },
