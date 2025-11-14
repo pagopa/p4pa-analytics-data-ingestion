@@ -13,7 +13,7 @@ import java.util.List;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssessmentEventDTO {
+public class AssessmentDataDTO {
   private Long assessmentId;
   private Long organizationId;
   private String debtPositionTypeOrgCode;

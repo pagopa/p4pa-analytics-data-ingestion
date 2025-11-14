@@ -9,5 +9,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-public class AssessmentDataEventDTO extends DataEventDTO<AssessmentEventDTO> {
+public class AssessmentDataEventDTO extends DataEventDTO<AssessmentDataDTO> {
 }

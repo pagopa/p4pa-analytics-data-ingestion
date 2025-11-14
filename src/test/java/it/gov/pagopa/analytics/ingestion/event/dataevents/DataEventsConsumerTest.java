@@ -1,5 +1,7 @@
 package it.gov.pagopa.analytics.ingestion.event.dataevents;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.analytics.ingestion.event.dataevents.dto.*;
 import it.gov.pagopa.analytics.ingestion.repository.AssessmentsClassificationRepository;
 import org.junit.jupiter.api.Test;
@@ -17,55 +19,56 @@ class DataEventsConsumerTest {
 
   @Mock
   private AssessmentsClassificationRepository assessmentsClassificationRepository;
+  @Mock
+  private ObjectMapper objectMapper;
 
   @InjectMocks
   private DataEventsConsumer dataEventsConsumer;
 
-  private final String mockEventId = "event-id-001";
+  private final String expectedJsonPayload = "{\"eventId\":\"test-event-123\",\"eventType\":\"ASSESSMENTS_CLASSIFICATION\",\"payload\":{\"assessmentId\":\"3324\"}}";
 
   @Test
-  void givenAssessmentsClassificationEventTypeWhenAcceptThenVerify() {
+  void givenAssessmentsClassificationEventTypeWhenAcceptThenVerify() throws JsonProcessingException {
     // GIVEN
-    AssessmentEventDTO assessmentData = new AssessmentEventDTO();
-    DataEventDTO<AssessmentEventDTO> eventDTO = new AssessmentDataEventDTO();
-    eventDTO.setEventId(mockEventId);
+    DataEventDTO<?> eventDTO = new AssessmentDataEventDTO();
     eventDTO.setEventType(ASSESSMENTS_CLASSIFICATION);
-    eventDTO.setPayload(assessmentData);
+    eventDTO.setEventId("test-event-123");
 
+    when(objectMapper.readValue(expectedJsonPayload, DataEventDTO.class)).thenReturn(eventDTO);
     // WHEN
-    dataEventsConsumer.accept(eventDTO);
+    dataEventsConsumer.accept(expectedJsonPayload);
 
     // THEN
     verify(assessmentsClassificationRepository, times(1)).save(any());
   }
 
   @Test
-  void givenExportEventTypeWhenAcceptThenVerify() {
+  void givenExportEventTypeWhenAcceptThenVerify() throws JsonProcessingException {
     // GIVEN
-    ExportDataDTO exportData = new ExportDataDTO();
-    DataEventDTO<ExportDataDTO> eventDTO = new ExportDataEventDTO();
-    eventDTO.setEventId(mockEventId);
+    DataEventDTO<?> eventDTO = new AssessmentDataEventDTO();
     eventDTO.setEventType(EXPORT_FILE);
-    eventDTO.setPayload(exportData);
+    eventDTO.setEventId("test-event-123");
+
+    when(objectMapper.readValue(expectedJsonPayload, DataEventDTO.class)).thenReturn(eventDTO);
 
     // WHEN
-    dataEventsConsumer.accept(eventDTO);
+    dataEventsConsumer.accept(expectedJsonPayload);
 
     // THEN
     verify(assessmentsClassificationRepository, never()).save(any());
   }
 
   @Test
-  void givenIngestionEventTypeWhenAcceptThenVerify() {
+  void givenIngestionEventTypeWhenAcceptThenVerify() throws JsonProcessingException {
     // GIVEN
-    IngestionDataDTO ingestionData = new IngestionDataDTO();
-    DataEventDTO<IngestionDataDTO> eventDTO = new IngestionDataEventDTO();
-    eventDTO.setEventId(mockEventId);
+    DataEventDTO<?> eventDTO = new AssessmentDataEventDTO();
     eventDTO.setEventType(INGESTION);
-    eventDTO.setPayload(ingestionData);
+    eventDTO.setEventId("test-event-123");
+
+    when(objectMapper.readValue(expectedJsonPayload, DataEventDTO.class)).thenReturn(eventDTO);
 
     // WHEN
-    dataEventsConsumer.accept(eventDTO);
+    dataEventsConsumer.accept(expectedJsonPayload);
 
     // THEN
     verify(assessmentsClassificationRepository, never()).save(any());

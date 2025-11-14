@@ -62,89 +62,8 @@
           "\"I\""
         ]
       },
-      "AssessmentDataEventDTO": {
-        "type": "object",
-        "examples": [
-          {
-            "eventDateTime": "2015-07-20T15:49:04-07:00",
-            "eventDescription": "string",
-            "eventId": "string",
-            "eventType": "INGESTION",
-            "payload": {
-              "assessmentId": 0,
-              "assessmentName": "string",
-              "assessmentsDetailList": [
-                {
-                  "_links": {
-                    "key": {
-                      "deprecation": "string",
-                      "href": "string",
-                      "hreflang": "string",
-                      "name": "string",
-                      "profile": "string",
-                      "templated": true,
-                      "title": "string",
-                      "type": "string"
-                    }
-                  },
-                  "amountCents": 0,
-                  "amountSubmitted": true,
-                  "assessmentCode": "string",
-                  "assessmentDescription": "string",
-                  "assessmentDetailId": 0,
-                  "assessmentId": 0,
-                  "classificationLabel": "PAID",
-                  "creationDate": "2015-07-20T15:49:04-07:00",
-                  "dateReceipt": "2015-07-20T15:49:04-07:00",
-                  "dateReporting": "2015-07-20T15:49:04-07:00",
-                  "dateTreasury": "2015-07-20T15:49:04-07:00",
-                  "debtPositionTypeOrgCode": "string",
-                  "debtPositionTypeOrgId": 0,
-                  "debtorFiscalCodeHash": "YmFzZTY0LWV4YW1wbGU=",
-                  "iud": "string",
-                  "iur": "string",
-                  "iuv": "string",
-                  "officeCode": "string",
-                  "officeDescription": "string",
-                  "organizationId": 0,
-                  "paymentDateTime": "2015-07-20T15:49:04-07:00",
-                  "receiptId": 0,
-                  "sectionCode": "string",
-                  "sectionDescription": "string",
-                  "updateDate": "2015-07-20T15:49:04-07:00",
-                  "updateOperatorExternalId": "string",
-                  "updateTraceId": "string"
-                }
-              ],
-              "debtPositionTypeOrgCode": "string",
-              "flagManualGeneration": true,
-              "iud": "string",
-              "iur": "string",
-              "iuv": "string",
-              "operatorExternalUserId": "string",
-              "organizationId": 0,
-              "printed": true,
-              "status": "CLOSED"
-            },
-            "traceId": "string"
-          }
-        ],
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataEventDTOObject"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "payload": {
-                "$ref": "#/components/schemas/AssessmentEventDTO"
-              }
-            }
-          }
-        ]
-      },
-      "AssessmentEventDTO": {
-        "title": "AssessmentEventDTO",
+      "AssessmentDataDTO": {
+        "title": "AssessmentDataDTO",
         "type": "object",
         "properties": {
           "assessmentId": {
@@ -245,6 +164,87 @@
             "organizationId": 0,
             "printed": true,
             "status": "CLOSED"
+          }
+        ]
+      },
+      "AssessmentDataEventDTO": {
+        "type": "object",
+        "examples": [
+          {
+            "eventDateTime": "2015-07-20T15:49:04-07:00",
+            "eventDescription": "string",
+            "eventId": "string",
+            "eventType": "INGESTION",
+            "payload": {
+              "assessmentId": 0,
+              "assessmentName": "string",
+              "assessmentsDetailList": [
+                {
+                  "_links": {
+                    "key": {
+                      "deprecation": "string",
+                      "href": "string",
+                      "hreflang": "string",
+                      "name": "string",
+                      "profile": "string",
+                      "templated": true,
+                      "title": "string",
+                      "type": "string"
+                    }
+                  },
+                  "amountCents": 0,
+                  "amountSubmitted": true,
+                  "assessmentCode": "string",
+                  "assessmentDescription": "string",
+                  "assessmentDetailId": 0,
+                  "assessmentId": 0,
+                  "classificationLabel": "PAID",
+                  "creationDate": "2015-07-20T15:49:04-07:00",
+                  "dateReceipt": "2015-07-20T15:49:04-07:00",
+                  "dateReporting": "2015-07-20T15:49:04-07:00",
+                  "dateTreasury": "2015-07-20T15:49:04-07:00",
+                  "debtPositionTypeOrgCode": "string",
+                  "debtPositionTypeOrgId": 0,
+                  "debtorFiscalCodeHash": "YmFzZTY0LWV4YW1wbGU=",
+                  "iud": "string",
+                  "iur": "string",
+                  "iuv": "string",
+                  "officeCode": "string",
+                  "officeDescription": "string",
+                  "organizationId": 0,
+                  "paymentDateTime": "2015-07-20T15:49:04-07:00",
+                  "receiptId": 0,
+                  "sectionCode": "string",
+                  "sectionDescription": "string",
+                  "updateDate": "2015-07-20T15:49:04-07:00",
+                  "updateOperatorExternalId": "string",
+                  "updateTraceId": "string"
+                }
+              ],
+              "debtPositionTypeOrgCode": "string",
+              "flagManualGeneration": true,
+              "iud": "string",
+              "iur": "string",
+              "iuv": "string",
+              "operatorExternalUserId": "string",
+              "organizationId": 0,
+              "printed": true,
+              "status": "CLOSED"
+            },
+            "traceId": "string"
+          }
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataEventDTOObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "payload": {
+                "$ref": "#/components/schemas/AssessmentDataDTO"
+              }
+            }
           }
         ]
       },
