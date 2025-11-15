@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.io.Serializable;
 
 @Entity
@@ -21,5 +24,6 @@ public class AssessmentsClassification extends RawBaseEntity implements Serializ
   @SequenceGenerator(name = "assessments_classification_generator", sequenceName = "assessments_classification_seq", allocationSize = 1)
   private Long assessmentClassificationPk;
   private String assessmentClassificationId;
+  @JdbcTypeCode(SqlTypes.JSON)
   private String assessmentClassificationPayload;
 }
