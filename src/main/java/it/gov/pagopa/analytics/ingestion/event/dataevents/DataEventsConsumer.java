@@ -36,7 +36,7 @@ public class DataEventsConsumer implements Consumer<String> {
         log.info("DataEvent received: {} occurred on ExportFile having eventId {}", paymentEventDTO.getEventType(), paymentEventDTO.getEventId());
       } else if (ASSESSMENTS_CLASSIFICATION.equals(paymentEventDTO.getEventType())) {
         log.info("DataEvent received: {} occurred on AssessmentsClassification having eventId {}", paymentEventDTO.getEventType(), paymentEventDTO.getEventId());
-        saveAssessmentsClassificationEvent(paymentEventDTO.getEventId(), rawJsonEvent);
+        saveAssessmentsClassificationEvent(rawJsonEvent);
       } else {
         log.info("DataEvent skipped: {}", paymentEventDTO.getEventType());
       }
@@ -45,10 +45,9 @@ public class DataEventsConsumer implements Consumer<String> {
     }
   }
 
-  private void saveAssessmentsClassificationEvent(String eventId, String assessmentDataDTO) {
+  private void saveAssessmentsClassificationEvent(String assessmentDataDTO) {
     assessmentsClassificationRepository.save(
       AssessmentsClassification.builder()
-      .assessmentClassificationId(eventId)
       .assessmentClassificationPayload(assessmentDataDTO)
       .build());
   }

@@ -23,7 +23,6 @@ public class AssessmentsClassification extends RawBaseEntity implements Serializ
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assessments_classification_generator")
   @SequenceGenerator(name = "assessments_classification_generator", sequenceName = "assessments_classification_seq", allocationSize = 1)
   private Long assessmentClassificationPk;
-  private String assessmentClassificationId;
   @JdbcTypeCode(SqlTypes.JSON)
   private String assessmentClassificationPayload;
 }
