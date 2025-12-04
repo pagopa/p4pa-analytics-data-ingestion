@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
 public class DebtPositionTypeOrg extends RawBaseEntity implements Serializable {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "debt_position_type_orgs_generator")
+  @SequenceGenerator(name = "debt_position_type_orgs_generator", sequenceName = "debt_position_type_orgs_seq", allocationSize = 1)
+  private Long debtPositionTypeOrgPk;
   private Long debtPositionTypeOrgId;
   private Long debtPositionTypeId;
   private Long organizationId;

@@ -91,7 +91,7 @@ class DebtPositionTypeOrgMapperTest {
     it.gov.pagopa.analytics.ingestion.model.DebtPositionTypeOrg actualResult = mapper.mapDebtPositionTypeOrg(debtPositionTypeOrg);
     //THEN
     Assertions.assertEquals(expectedResult, actualResult);
-    TestUtils.checkNotNullFields(actualResult, "processedTime");
+    TestUtils.checkNotNullFields(actualResult, "debtPositionTypeOrgPk", "processedTime");
   }
 
 }
