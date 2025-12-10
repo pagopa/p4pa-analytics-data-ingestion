@@ -30,7 +30,18 @@ spring:
       # generic
       - task-queue: DataIngestionWF
         capacity:
-          max-concurrent-workflow-task-pollers: "\${WF_DATA_INGESTION_POLLER_SIZE:3}"
+          workflow-task-pollers-configuration:
+            poller-behavior-autoscaling:
+              enabled: true
+              initial-concurrent-task-pollers: "\${WF_DATA_INGESTION_MIN_POLLER_SIZE:1}"
+              min-concurrent-task-pollers: "\${WF_DATA_INGESTION_MIN_POLLER_SIZE:1}"
+              max-concurrent-task-pollers: "\${WF_DATA_INGESTION_MAX_POLLER_SIZE:3}"
+          activity-task-pollers-configuration:
+            poller-behavior-autoscaling:
+              enabled: true
+              initial-concurrent-task-pollers: "\${ACTIVITY_DATA_INGESTION_MIN_POLLER_SIZE:1}"
+              min-concurrent-task-pollers: "\${ACTIVITY_DATA_INGESTION_MIN_POLLER_SIZE:1}"
+              max-concurrent-task-pollers: "\${ACTIVITY_DATA_INGESTION_MAX_POLLER_SIZE:3}"
   cloud:
     function:
       definition: paymentsConsumer;dataEventsConsumer;auditConsumer
@@ -235,6 +246,13 @@ rest:
 schedule:
   debt-position-type-orgs-ingestion:
     cron-expression: "\${SCHEDULE_DP_TYPE_ORGS_INGESTION_CRON:0 3 * * *}" # each day, 01:00-07:00-13:00-19:00 (Europe/Rome)
+
+temporal:
+  timeouts:
+    system-info: "\${TEMPORAL_TIMEOUT_SYSTEM_INFO_SECONDS:5}"
+    rpc-long-poll: "\${TEMPORAL_TIMEOUT_RPC_LONG_POLL_SECONDS:70}"
+    rpc-query: "\${TEMPORAL_TIMEOUT_RPC_QUERY_SECONDS:10}"
+    rpc-generic: "\${TEMPORAL_TIMEOUT_RPC_GENERIC_SECONDS:10}"
 
 workflow:
   default:
