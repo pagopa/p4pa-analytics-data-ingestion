@@ -28,7 +28,7 @@ public class DebtPositionTypeOrgsIngestionWFClient {
     String taskQueue = TaskQueueConstants.TASK_QUEUE_DATA_INGESTION;
     String workflowId = generateWorkflowId(ON_DEMAND, DebtPositionTypeOrgsIngestionWF.class);
 
-    DebtPositionTypeOrgsIngestionWF workflow = workflowService.buildWorkflowStub(
+    DebtPositionTypeOrgsIngestionWF workflow = workflowService.buildWorkflowStubToStartNew(
       DebtPositionTypeOrgsIngestionWF.class,
       taskQueue,
       workflowId

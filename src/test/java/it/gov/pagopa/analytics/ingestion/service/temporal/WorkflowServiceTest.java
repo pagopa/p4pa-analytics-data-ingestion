@@ -23,6 +23,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.*;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -55,7 +56,7 @@ class WorkflowServiceTest {
   }
 
   @Test
-  void whenIngestThenOk() {
+  void whenBuildWorkflowStubToStartNewThenOk() {
     // Given
     long ingestionFlowFileId = 1L;
     String workflowId = String.valueOf(ingestionFlowFileId);
@@ -70,7 +71,28 @@ class WorkflowServiceTest {
       .thenReturn(wfMock);
 
     // When
-    DebtPositionTypeOrgsIngestionWF result = workflowService.buildWorkflowStub(DebtPositionTypeOrgsIngestionWF.class, taskQueue, workflowId);
+    DebtPositionTypeOrgsIngestionWF result = workflowService.buildWorkflowStubToStartNew(DebtPositionTypeOrgsIngestionWF.class, taskQueue, workflowId);
+
+    // Then
+    Assertions.assertSame(wfMock, result);
+  }
+
+  @Test
+  void whenBuildWorkflowStubThenOk() {
+    // Given
+    long ingestionFlowFileId = 1L;
+    String workflowId = String.valueOf(ingestionFlowFileId);
+    Optional<String> runId = Optional.empty();
+
+    when(workflowClientMock.newWorkflowStub(
+      Mockito.eq(DebtPositionTypeOrgsIngestionWF.class),
+      Mockito.same(workflowId),
+      Mockito.same(runId)
+    ))
+      .thenReturn(wfMock);
+
+    // When
+    DebtPositionTypeOrgsIngestionWF result = workflowService.buildWorkflowStub(DebtPositionTypeOrgsIngestionWF.class, workflowId, runId);
 
     // Then
     Assertions.assertSame(wfMock, result);
