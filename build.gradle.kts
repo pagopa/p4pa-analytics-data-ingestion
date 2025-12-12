@@ -4,14 +4,14 @@ import com.github.jk1.license.filter.*
 
 plugins {
   java
-  id("org.springframework.boot") version "3.5.8"
+  id("org.springframework.boot") version "3.5.6"
   id("io.spring.dependency-management") version "1.1.7"
   jacoco
   id("org.sonarqube") version "6.3.1.5724"
   id("com.github.ben-manes.versions") version "0.52.0"
   id("org.openapi.generator") version "7.15.0"
   id("org.ajoberstar.grgit") version "5.3.2"
-  id("com.gorylenko.gradle-git-properties") version "2.5.4"
+  id("com.gorylenko.gradle-git-properties") version "2.5.3"
   id("com.github.jk1.dependency-license-report") version "3.0.1"
 }
 
@@ -47,21 +47,21 @@ repositories {
   mavenCentral()
 }
 
-val springDocOpenApiVersion = "2.8.14"
-val springWolfAsyncApiVersion = "1.20.0"
+val springDocOpenApiVersion = "2.8.13"
+val springWolfAsyncApiVersion = "1.16.0"
 val janinoVersion = "3.1.12"
 val openApiToolsVersion = "0.2.7"
-val micrometerVersion = "1.6.1"
-val otelVersion = "1.57.0"
-val bouncycastleVersion = "1.83"
+val micrometerVersion = "1.5.4"
+val otelVersion = "1.49.0"
+val bouncycastleVersion = "1.82"
 val httpClientVersion = "5.5"
 val commonsLang3Version = "3.19.0"
-val temporalVersion = "1.32.1"
-val protobufJavaVersion = "4.33.2"
-val grpcBomVersion = "1.77.0"
+val temporalVersion = "1.31.0"
+val protobufJavaVersion = "4.32.1"
+val grpcBomVersion = "1.75.0"
 val guavaVersion = "33.5.0-jre"
 val mapStructVersion = "1.6.3"
-val postgresJdbcVersion = "42.7.8"
+val postgresJdbcVersion = "42.7.7"
 val podamVersion = "8.0.2.RELEASE"
 val springCloudDepsVersion = "2025.0.0"
 
