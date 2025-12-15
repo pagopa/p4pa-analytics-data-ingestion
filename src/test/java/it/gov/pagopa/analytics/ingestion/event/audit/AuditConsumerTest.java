@@ -22,8 +22,6 @@ class AuditConsumerTest {
   @InjectMocks
   private AuditConsumer auditConsumer;
 
-  private final String expectedCEFPayload = "";
-
   @AfterEach
   void verifyNoMoreInteractions(){
     Mockito.verifyNoMoreInteractions(
