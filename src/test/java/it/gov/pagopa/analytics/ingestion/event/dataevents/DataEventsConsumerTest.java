@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.analytics.ingestion.event.dataevents.dto.*;
 import it.gov.pagopa.analytics.ingestion.exception.custom.WorkflowInternalErrorException;
 import it.gov.pagopa.analytics.ingestion.repository.AssessmentsClassificationRepository;
+import it.gov.pagopa.analytics.ingestion.repository.ExportFileRepository;
+import it.gov.pagopa.analytics.ingestion.repository.IngestionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +23,10 @@ class DataEventsConsumerTest {
 
   @Mock
   private AssessmentsClassificationRepository assessmentsClassificationRepository;
+  @Mock
+  private IngestionRepository ingestionRepository;
+  @Mock
+  private ExportFileRepository exportFileRepository;
   @Mock
   private ObjectMapper objectMapper;
 
@@ -58,6 +64,7 @@ class DataEventsConsumerTest {
 
     // THEN
     verify(assessmentsClassificationRepository, never()).save(any());
+    verify(exportFileRepository, times(1)).save(any());
   }
 
   @Test
@@ -74,6 +81,7 @@ class DataEventsConsumerTest {
 
     // THEN
     verify(assessmentsClassificationRepository, never()).save(any());
+    verify(ingestionRepository, times(1)).save(any());
   }
 
   @Test
