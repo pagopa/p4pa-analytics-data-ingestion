@@ -27,6 +27,14 @@ public class TestUtils {
   private TestUtils() {
   }
 
+  static {
+    clearDefaultTimezone();
+  }
+
+  public static void clearDefaultTimezone() {
+    TimeZone.setDefault(Constants.DEFAULT_TIMEZONE);
+  }
+
   public static final LocalDate DATE = LocalDate.of(2024, 5, 15);
   public static final LocalDateTime DATETIME = LocalDateTime.of(DATE, LocalTime.of(10, 30, 0));
   public static final OffsetDateTime OFFSET_DATE_TIME = DATETIME.atZone(ZoneId.systemDefault()).toOffsetDateTime();
@@ -46,7 +54,7 @@ public class TestUtils {
 
   public static PodamFactory getPodamFactory() {
     PodamFactoryImpl podamFactory = new PodamFactoryImpl();
-    podamFactory.getStrategy().addOrReplaceTypeManufacturer(SortedSet.class, new AbstractTypeManufacturer<>(){
+    podamFactory.getStrategy().addOrReplaceTypeManufacturer(SortedSet.class, new AbstractTypeManufacturer<>() {
       @Override
       public SortedSet<?> getType(DataProviderStrategy strategy, AttributeMetadata attributeMetadata, ManufacturingContext manufacturingCtx) {
         return new TreeSet<>();
@@ -146,15 +154,16 @@ public class TestUtils {
   }
 
   private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.nnnnnnnnn");
+
   private static <T> boolean compareEquals(Comparable<T> v1, T v2) {
     try {
       //specific equality tests for TemporalAccessor classes
-      if(v1 instanceof TemporalAccessor v1Time && v2 instanceof TemporalAccessor v2Time){
+      if (v1 instanceof TemporalAccessor v1Time && v2 instanceof TemporalAccessor v2Time) {
         //ignore timezone (for localDate/Time objects)
         return Strings.CS.equals(formatter.format(v1Time), formatter.format(v2Time));
       } else {
         //generic fallback
-        return v1.compareTo(v2)==0;
+        return v1.compareTo(v2) == 0;
       }
     } catch (ClassCastException cce) {
       log.warn("cannot compare {} with {}", ClassUtils.getName(v1), ClassUtils.getName(v2));
