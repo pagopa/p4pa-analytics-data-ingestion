@@ -5,7 +5,7 @@ import it.gov.pagopa.pu.auth.controller.generated.AuthnApi;
 import it.gov.pagopa.pu.auth.generated.ApiClient;
 import it.gov.pagopa.pu.auth.generated.BaseApi;
 import jakarta.annotation.PreDestroy;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
