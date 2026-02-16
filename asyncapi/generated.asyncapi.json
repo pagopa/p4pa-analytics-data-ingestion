@@ -187,6 +187,7 @@
                         "amountCents": 0,
                         "category": "string",
                         "creationDate": "2015-07-20T15:49:04-07:00",
+                        "flagOwner": true,
                         "iban": "string",
                         "installmentId": 0,
                         "mbdAttachment": "string",
@@ -307,6 +308,7 @@
                           "amountCents": 0,
                           "category": "string",
                           "creationDate": "2015-07-20T15:49:04-07:00",
+                          "flagOwner": true,
                           "iban": "string",
                           "installmentId": 0,
                           "mbdAttachment": "string",
@@ -572,6 +574,7 @@
                 "amountCents": 0,
                 "category": "string",
                 "creationDate": "2015-07-20T15:49:04-07:00",
+                "flagOwner": true,
                 "iban": "string",
                 "installmentId": 0,
                 "mbdAttachment": "string",
@@ -808,6 +811,7 @@
                     "amountCents": 0,
                     "category": "string",
                     "creationDate": "2015-07-20T15:49:04-07:00",
+                    "flagOwner": true,
                     "iban": "string",
                     "installmentId": 0,
                     "mbdAttachment": "string",
@@ -959,6 +963,9 @@
             "type": "string",
             "format": "date-time"
           },
+          "flagOwner": {
+            "type": "boolean"
+          },
           "iban": {
             "type": "string"
           },
@@ -1014,6 +1021,7 @@
             "amountCents": 0,
             "category": "string",
             "creationDate": "2015-07-20T15:49:04-07:00",
+            "flagOwner": true,
             "iban": "string",
             "installmentId": 0,
             "mbdAttachment": "string",
