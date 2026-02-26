@@ -20,7 +20,6 @@ public class DebtPositionTypeOrgMapper {
       .postalAccountCode(other.getPostalAccountCode())
       .holderPostalCc(other.getHolderPostalCc())
       .orgSector(other.getOrgSector())
-      .xsdDefinitionRef(other.getXsdDefinitionRef())
       .amountCents(other.getAmountCents())
       .externalPaymentUrl(other.getExternalPaymentUrl())
       .flagAnonymousFiscalCode(Boolean.TRUE.equals(other.getFlagAnonymousFiscalCode()))
