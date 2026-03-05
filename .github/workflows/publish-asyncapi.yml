@@ -2,7 +2,7 @@ name: Publish AsyncApi
 
 on:
   workflow_run:
-    workflows: [ release ]
+    workflows: [Publish OpenApi]
     types:
       - completed
   workflow_dispatch:
