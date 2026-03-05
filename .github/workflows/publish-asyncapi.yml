@@ -5,6 +5,7 @@ on:
     workflows: [ release ]
     types:
       - completed
+  workflow_dispatch:
 
 permissions:
   packages: write
