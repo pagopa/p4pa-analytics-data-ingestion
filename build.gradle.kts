@@ -57,6 +57,7 @@ val micrometerVersion = "1.6.3"
 val otelVersion = "1.57.0"
 val bouncycastleVersion = "1.83"
 val httpClientVersion = "5.6"
+val httpCoreVersion = "5.4.1"
 val commonsLang3Version = "3.20.0"
 val temporalVersion = "1.32.1"
 val protobufJavaVersion = "4.33.2"
@@ -108,6 +109,7 @@ dependencies {
   implementation ("org.mapstruct:mapstruct:${mapStructVersion}")
   implementation ("org.bouncycastle:bcprov-jdk18on:${bouncycastleVersion}")
   implementation("org.apache.httpcomponents.client5:httpclient5:$httpClientVersion")
+  implementation("org.apache.httpcomponents.core5:httpcore5:$httpCoreVersion")
   implementation ("org.postgresql:postgresql:${postgresJdbcVersion}")
   // Temporal
   implementation("io.temporal:temporal-spring-boot-starter:$temporalVersion") {
