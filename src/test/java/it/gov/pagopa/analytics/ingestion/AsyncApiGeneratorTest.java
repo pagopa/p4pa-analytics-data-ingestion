@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
   "springwolf.enabled=true",
   "springwolf.use-fqn=false",
-  "spring.cloud.function.definition=",
   "spring.temporal.enabled=false",
   "spring.temporal.connection.target="
 })
