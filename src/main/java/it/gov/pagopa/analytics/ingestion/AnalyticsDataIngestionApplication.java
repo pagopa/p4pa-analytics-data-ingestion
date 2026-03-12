@@ -7,7 +7,13 @@ import org.springframework.boot.webmvc.autoconfigure.error.ErrorMvcAutoConfigura
 
 import java.util.TimeZone;
 
-@SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
+@SpringBootApplication(
+  exclude = {ErrorMvcAutoConfiguration.class},
+  scanBasePackages = {
+    "it.gov.pagopa.pu",
+    "it.gov.pagopa.analytics"
+  }
+)
 public class AnalyticsDataIngestionApplication {
 
 	public static void main(String[] args) {
