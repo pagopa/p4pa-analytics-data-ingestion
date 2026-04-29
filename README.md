@@ -4,6 +4,8 @@ This application represent the data ingestion layer of the analytics tool relate
 
 See [PU Microservice Architecture](https://pagopa.atlassian.net/wiki/spaces/SPAC/pages/1405845916/Architettura+microservizi) for more details.
 
+See [p4pa-doc](https://github.com/pagopa/p4pa-doc) for further documentation.
+
 ## 🧱 Role
 
 * To ingest the data filling `raw` layer.
