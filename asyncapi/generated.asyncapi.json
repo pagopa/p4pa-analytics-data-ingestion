@@ -122,6 +122,12 @@
               "$ref": "#/components/schemas/PaymentOptionDTO"
             }
           },
+          "stationId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "status": {
             "$ref": "#/components/schemas/DebtPositionStatus"
           },
@@ -251,6 +257,7 @@
                 "updateTraceId": "string"
               }
             ],
+            "stationId": "string",
             "status": "TO_SYNC",
             "updateDate": "2015-07-20T15:49:04-07:00",
             "updateOperatorExternalId": "string",
@@ -372,6 +379,7 @@
                   "updateTraceId": "string"
                 }
               ],
+              "stationId": "string",
               "status": "TO_SYNC",
               "updateDate": "2015-07-20T15:49:04-07:00",
               "updateOperatorExternalId": "string",
