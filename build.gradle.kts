@@ -66,7 +66,7 @@ val grpcBomVersion = "1.82.0"
 val guavaVersion = "33.6.0-jre"
 val otelVersion = "1.63.0"
 val mapStructVersion = "1.6.3"
-val postgresJdbcVersion = "42.7.11"
+val postgresJdbcVersion = "42.7.12"
 val podamVersion = "8.0.2.RELEASE"
 
 val springCloudDepsVersion = "2025.1.2"
