@@ -1,10 +1,12 @@
 package it.gov.pagopa.analytics.ingestion.exception.common;
 
 import it.gov.pagopa.analytics.ingestion.dto.generated.ErrorFieldDTO;
+import it.gov.pagopa.analytics.ingestion.exception.NotRetryableActivityException;
 
 import java.util.List;
 
-public class InvalidValueException extends BaseBusinessException {
+@SuppressWarnings("java:S110") // Suppress "Inheritance tree of classes should not be too deep": allowed for exception hierarchy
+public class InvalidValueException extends NotRetryableActivityException {
 
   public InvalidValueException(String code, String message) {
     this(code, message, null, null);
