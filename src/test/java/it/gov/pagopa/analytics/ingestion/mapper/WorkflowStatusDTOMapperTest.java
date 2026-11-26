@@ -8,14 +8,12 @@ import it.gov.pagopa.analytics.ingestion.dto.generated.WorkflowStatusDTO;
 import it.gov.pagopa.analytics.ingestion.utils.Constants;
 import it.gov.pagopa.analytics.ingestion.utils.TestUtils;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class WorkflowStatusDTOMapperTest {
 
@@ -31,12 +29,12 @@ class WorkflowStatusDTOMapperTest {
       .taskQueue("TASKQUEUE")
       .startDateTime(OffsetDateTime.now(Constants.ZONEID))
       .executionDateTime(OffsetDateTime.now(Constants.ZONEID).plusMinutes(1))
-      .endDateTime(OffsetDateTime.now(Constants.ZONEID).plusDays(1))
+      .endDateTime(OffsetDateTime.now(Constants.ZONEID).plusHours(1))
       .duration("PT0S")
       .status(WorkflowExecutionStatus.WORKFLOW_EXECUTION_STATUS_RUNNING)
       .build();
 
-    WorkflowExecutionInfo workflowExecutionInfoMock = Mockito.mock(WorkflowExecutionInfo.class, RETURNS_DEEP_STUBS);
+    WorkflowExecutionInfo workflowExecutionInfoMock = mock(WorkflowExecutionInfo.class, RETURNS_DEEP_STUBS);
 
     when(workflowExecutionInfoMock.getType()).thenReturn(WorkflowType.newBuilder().setName(expectedResult.getWorkflowType()).build());
     when(workflowExecutionInfoMock.getStatus()).thenReturn(expectedResult.getStatus());
